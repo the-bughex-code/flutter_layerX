@@ -1,0 +1,17 @@
+include: package:lints/recommended.yaml
+
+analyzer:
+  exclude:
+    - "**/*.g.dart"
+    - "**/*.freezed.dart"
+
+linter:
+  rules:
+    - always_declare_return_types
+    - avoid_dynamic_calls
+    - avoid_empty_else
+    - avoid_relative_lib_imports
+    - prefer_const_constructors
+    - prefer_final_fields
+    - unnecessary_lambdas
+    - unnecessary_this
