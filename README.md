@@ -142,7 +142,7 @@ GitHub: [https://github.com/umair-hashmii](https://github.com/umair-hashmii)
 ## Resources
 
 * LayerX Website: [https://layer-x.netlify.app/](https://layer-x.netlify.app/)
-* GitHub Repository: [https://github.com/Umaiir11/layerx_generator](https://github.com/Umaiir11/layerx_generator)
+* GitHub Repository: [https://github.com/the-bughex-code/flutter_layerX](https://github.com/the-bughex-code/flutter_layerX)
 * Architecture Blog: [https://medium.com/@iam.umairimran/layerx-architecture-8e9415d9d624](https://medium.com/@iam.umairimran/layerx-architecture-8e9415d9d624)
 
 ---
