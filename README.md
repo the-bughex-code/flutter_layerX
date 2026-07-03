@@ -1,19 +1,13 @@
-<!-- ██╗      █████╗ ██╗   ██╗███████╗██████╗ ██╗  ██╗ -->
-<!-- ██║     ██╔══██╗╚██╗ ██╔╝██╔════╝██╔══██╗╚██╗██╔╝ -->
-<!-- ██║     ███████║ ╚████╔╝ █████╗  ██████╔╝ ╚███╔╝  -->
-<!-- ██║     ██╔══██║  ╚██╔╝  ██╔══╝  ██╔══██╗ ██╔██╗  -->
-<!-- ███████╗██║  ██║   ██║   ███████╗██║  ██║██╔╝ ██╗ -->
-
 <p align="center">
-  <img src="https://img.shields.io/badge/LayerX-Generator-2D9BFF?style=for-the-badge&labelColor=1B1C1E&logo=flutter&logoColor=white" alt="LayerX Generator"/>
+  <img src="https://img.shields.io/badge/◆_LayerX-Generator-2D9BFF?style=for-the-badge&labelColor=1B1C1E&logo=flutter&logoColor=white" alt="LayerX Generator"/>
 </p>
 
-<h1 align="center">🚀 LayerX Generator</h1>
+<h1 align="center">◆ LayerX Generator</h1>
 
 <p align="center">
-  <b>Bootstrap a world-class Flutter architecture in <i>one command</i>.</b><br/>
-  MVVM · GetX · resilient networking · a polished design system · a working demo — <br/>
-  and a fresh project that passes <code>analyze</code> &amp; <code>test</code> with <b>zero</b> errors.
+  <b>Your Flutter architecture — scaffolded, wired, and error-free in one command.</b><br/>
+  MVVM · GetX · resilient networking · a real design system · a working demo.<br/>
+  <sub>Spend your first hour building features, not folders.</sub>
 </p>
 
 <p align="center">
@@ -23,45 +17,45 @@
   <img src="https://img.shields.io/badge/Flutter-3.44+-02569B?style=flat-square&logo=flutter" alt="flutter"/>
   <img src="https://img.shields.io/badge/Dart-3.8+-0175C2?style=flat-square&logo=dart" alt="dart"/>
   <img src="https://img.shields.io/badge/null%20safety-100%25-21D575?style=flat-square" alt="null safety"/>
-  <img src="https://img.shields.io/badge/platforms-android%20|%20ios%20|%20web%20|%20desktop-1B1C1E?style=flat-square" alt="platforms"/>
-  <img src="https://img.shields.io/badge/license-MIT-blue?style=flat-square" alt="license"/>
+  <img src="https://img.shields.io/badge/analyzer-0%20issues-21D575?style=flat-square" alt="0 issues"/>
+  <img src="https://img.shields.io/badge/license-MIT-2D9BFF?style=flat-square" alt="license"/>
 </p>
 
 <p align="center">
-  <i>"Ship bugs? We don't." &nbsp;·&nbsp; "Null today. Null tomorrow. Null never." &nbsp;·&nbsp; "Coffee in. Features out."</i>
+  <i>“Ship bugs? We don't.”&nbsp;&nbsp;·&nbsp;&nbsp;“Null today. Null tomorrow. Null never.”&nbsp;&nbsp;·&nbsp;&nbsp;“Coffee in. Features out.”</i>
 </p>
 
 ---
 
-## ⚡ TL;DR
+## ◆ Sixty-second start
 
 ```sh
 dart pub global activate layerx_generator   # once
 layerx enable                               # in your project root
-flutter run                                 # ...that's it. Ship it. ☕
+flutter run                                 # ship it ☕
 ```
 
-> **`layerx enable`** installs every dependency it needs, generates a clean
-> `lib/app/` architecture, wires up routing + DI, and drops in a working
-> Splash → Login → Home demo. No manual fixes. No missing packages. No red squiggles.
+> **`layerx enable`** installs every dependency, scaffolds a clean `lib/app/`,
+> wires routing + DI, drops in a Splash → Login → Home demo, and even runs
+> `dart format` on the result. No manual fixes. No missing packages. No red squiggles.
 
 ---
 
-## ✨ Features
+## ◆ What's in the box
 
-| | Feature | What you get |
+| | Feature | You get |
 |---|---|---|
-| 🧩 | **MVVM + GetX** | Views, controllers, models, repositories — routing & DI wired in |
-| 📦 | **Auto dependencies** | GetX, ScreenUtil, `flutter_animate`, Google Fonts, `logger`, `http`, `intl`, prefs, permissions, notifications — all at latest compatible versions |
+| 🧩 | **MVVM + GetX** | Views, controllers, models, repositories — routing & DI pre-wired |
+| 📦 | **Auto dependencies** | GetX, ScreenUtil, `flutter_animate`, Google Fonts, `logger`, `http`, `intl`, prefs, permissions, notifications — latest compatible, resolved for you |
 | 🎨 | **Design system** | `AppButton`, `AppTextField`, extension snackbars, haptics, animation wrappers, responsive `AppTextStyles` |
-| 🔐 | **Networking layer** | Pooled `http` client with retries, backoff, cancellation & de-duplication |
-| 🖥️ | **Modern log console** | Colored, emoji-tagged logs with request/response, pretty JSON & timing |
+| 🌐 | **Networking** | Pooled `http` client with retries, backoff, cancellation & request de-duplication |
+| 🖥️ | **Dev console** | Colored, emoji-tagged logs with request/response, pretty JSON & timing |
 | 🚦 | **Working demo** | Splash → Login → Home with a constructor-injected `AuthRepository` |
 | ✅ | **Error-free** | `flutter analyze` → *No issues found!* · `flutter test` → *All tests passed!* |
 
 ---
 
-## 🧠 Why LayerX?
+## ◆ Before &amp; after
 
 <table>
 <tr><th>Without LayerX</th><th>With LayerX</th></tr>
@@ -69,15 +63,15 @@ flutter run                                 # ...that's it. Ship it. ☕
 <td>
 
 - Hours of boilerplate before feature #1
-- "Which folder does this go in?" 🤔
-- Copy-pasting a networking layer *again*
-- Analyzer warnings on a brand-new project
-- Bikeshedding button & snackbar styles
+- “Which folder does this go in?” 🤔
+- Re-writing a networking layer *again*
+- Warnings on a brand-new project
+- Bikeshedding button &amp; snackbar styles
 
 </td>
 <td>
 
-- One command, a complete architecture
+- One command → a complete architecture
 - Opinionated, consistent structure
 - Battle-tested `HttpsCalls` included
 - **Zero** analyzer issues out of the box
@@ -89,19 +83,19 @@ flutter run                                 # ...that's it. Ship it. ☕
 
 ---
 
-## 🎉 Fun Facts
+## ◆ Fun facts
 
-> Numbers from turning this package production-grade:
+> From taking this package production-grade:
 
-- ☕ **~180 → 0** analyzer errors eliminated on a fresh project
-- 🔥 **4** silent API-drift bugs caught by real builds (not vibes)
-- 🧠 **15** review findings hunted down across 3 adversarial passes
-- ⚡ **1** command replaces an afternoon of setup
-- 🟢 **100%** null-safe, **0** `TODO`s shipped
+- 🧹 **~180 → 0** analyzer errors erased on a fresh project
+- 🐛 **4** silent API-drift bugs caught by real builds (not vibes)
+- 🔍 **15** review findings hunted down across 3 adversarial passes
+- ⏱️ **1** command replaces an afternoon of setup
+- 🟢 **100%** null-safe · **0** `TODO`s shipped
 
 ---
 
-## 📦 Installation
+## ◆ Install
 
 **Global (recommended)** — gives you the `layerx` command everywhere:
 
@@ -109,7 +103,7 @@ flutter run                                 # ...that's it. Ship it. ☕
 dart pub global activate layerx_generator
 ```
 
-**Or add it as a dev dependency:**
+**Or as a dev dependency:**
 
 ```yaml
 dev_dependencies:
@@ -118,7 +112,7 @@ dev_dependencies:
 
 ---
 
-## 🚀 Usage
+## ◆ Usage
 
 ```sh
 layerx enable                # generate into the current project
@@ -133,7 +127,7 @@ layerx enable --no-deps      # generate files, skip dependency install
 dart run layerx_generator --path .
 ```
 
-The classic invocation is fully supported and does exactly the same thing.
+Same behaviour, zero global state.
 </details>
 
 **Programmatic:**
@@ -149,17 +143,17 @@ Future<void> main() async {
 
 ---
 
-## 🖥️ Supported Platforms
+## ◆ Supported platforms
 
 | Android | iOS | Web | macOS | Windows | Linux |
 |:---:|:---:|:---:|:---:|:---:|:---:|
 | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 
-> Requires **Flutter ≥ 3.44** and **Dart ≥ 3.8**.
+> Requires **Flutter ≥ 3.44** · **Dart ≥ 3.8**.
 
 ---
 
-## 🏛️ Architecture
+## ◆ Architecture
 
 ```mermaid
 flowchart TD
@@ -179,20 +173,20 @@ flowchart TD
     style Routes fill:#EA4334,color:#fff
 ```
 
-**Data flows one way:** `View → Controller → Repository → Network`, and state
-flows back reactively. Controllers own business logic; views stay thin;
-repositories are the only thing that touches the network.
+Data flows one way — **View → Controller → Repository → Network** — and state flows
+back reactively. Controllers own the logic, views stay thin, and only repositories
+touch the network.
 
 ---
 
-## 🗂️ Folder Structure
+## ◆ Folder structure
 
 ```text
 lib/app/
 ├── app_widget.dart              # ScreenUtil + GetMaterialApp
-├── config/                      # colors, strings, routes, text styles, urls, utils
+├── config/                      # colors · strings · routes · text styles · urls · utils
 ├── mvvm/
-│   ├── model/                   # api_response, login_request/response models
+│   ├── model/                   # api_response · login_request/response
 │   ├── view/                    # splash · login · home
 │   └── view_model/              # splash · login · home controllers
 ├── repository/
@@ -203,43 +197,40 @@ lib/app/
 ├── services/                    # logger · haptics · prefs · http · json · location
 │   └── notifications/           # FCM + local notifications
 └── custom_widgets/
-    ├── buttons/                 # AppButton
-    ├── inputs/                  # AppTextField
-    ├── snackbars/               # 'msg'.showSuccess()
-    ├── animations/              # FadeSlideIn, SpringIn, …
-    └── dialogs/                 # NoInternetDialog
+    ├── buttons/ · inputs/ · snackbars/ · animations/ · dialogs/
 ```
 
 ---
 
-## 🎨 Design System
+## ◆ Design system
 
 ```dart
-// 🔘 Buttons — press animation, gradient, icons, loading, haptics
+// Buttons — press animation, optional gradient, icons, loading, haptics
 AppButton(label: 'Sign In', onPressed: controller.login, isLoading: true);
-AppButton(label: 'Continue', gradient: myGradient, suffixIcon: Icons.arrow_forward);
 
-// ⌨️ Inputs — validation, required marker, prefix/suffix, focus & error styles
+// Inputs — validation, required marker, prefix/suffix, focus & error styles
 AppTextField(label: 'Email', isRequired: true, validator: controller.validateEmail);
 
-// 🍬 Snackbars — an extension on String (dark-glass, animated)
+// Snackbars — an extension on String
 'Login successful'.showSuccess();
 'Please try again'.showError();
-'No changes to save'.showWarning();
 
-// 📳 Haptics — centralized intensities
-HapticService.light();   HapticService.success();   HapticService.error();
+// Haptics — centralized intensities
+HapticService.success();
 
-// 🔤 Typography — never write a raw TextStyle in a view again
+// Typography — never write a raw TextStyle in a view again
 Text('Welcome', style: AppTextStyles.displayLarge);
 
-// 🎞️ Animations — drop-in wrappers
+// Spacing — use the generated padding extensions instead of SizedBox
+myWidget.paddingBottom(24.h);
+
+// Animations — drop-in wrappers
 FadeSlideIn(child: card);   SpringIn(child: logo);   StaggeredColumn(children: rows);
 ```
 
 ---
 
-## 🧭 Routing (bindings live in routes — no binding files)
+## ◆ Routing (bindings live in routes — no binding files)
 
 ```dart
 GetPage(
@@ -254,7 +245,7 @@ GetPage(
 
 ---
 
-## 🖨️ The Console
+## ◆ The console
 
 Call it once from `main()`:
 
@@ -262,41 +253,41 @@ Call it once from `main()`:
 LoggerService.banner(name: AppConfig.appName, env: 'debug');
 ```
 
-…and log like a pro:
+…then log like a pro:
 
 ```dart
 LoggerService.divider('AUTH FLOW');
 LoggerService.request('POST', 'auth/login', body: {'email': email});
 LoggerService.response(200, 'auth/login', body: data, elapsed: elapsed);
-LoggerService.s('Logged in as $name');           // ✅ success
-LoggerService.json(session, label: 'SESSION');    // 🧾 pretty JSON
-LoggerService.hint('Wire your real endpoint');    // 💡 actionable hint
-final user = await LoggerService.timed('fetchUser', () => api.getUser()); // ⏱️
+LoggerService.s('Logged in as $name');            // ✅ success
+LoggerService.json(session, label: 'SESSION');     // 🧾 pretty JSON
+LoggerService.hint('Wire your real endpoint');     // 💡 actionable hint
+final u = await LoggerService.timed('fetchUser', () => api.getUser());  // ⏱️
 ```
 
 ```text
-┌────────────────────────────────────────────────────────
+┌──────────────────────────────────────────────────────────
 │ 16:27:08.901 (+0:00:00.003)
 ├┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄
-│ 🚀  LayerX  •  v2.1.0  •  DEBUG
+│ 🧱  LayerX  •  v2.1.0  •  DEBUG
 │ ✨  Clean architecture · GetX · zero boilerplate
 │ 🟢  Console ready — happy shipping!
-└────────────────────────────────────────────────────────
+└──────────────────────────────────────────────────────────
 │ ✅ ← 200  auth/login • 613ms
 │ 📦 { "token": "ey...", "name": "demo" }
-└────────────────────────────────────────────────────────
+└──────────────────────────────────────────────────────────
 ```
 
-> All output is gated behind `kDebugMode` — **silent in release builds**, and it
-> never echoes secrets like your auth token. 🔐
+> Every line is gated behind `kDebugMode` — **silent in release**, and it never
+> echoes secrets like your auth token. 🔐
 
 ---
 
-## ⚙️ Configuration & Customization
+## ◆ Configure &amp; customize
 
 | Want to… | Do this |
 |---|---|
-| Change the font | Set `AppTextStyles.fontFamily = AppFontFamily.rubik;` |
+| Change the font | `AppTextStyles.fontFamily = AppFontFamily.rubik;` |
 | Re-theme colors | Edit tokens in `config/app_colors.dart` |
 | Point at your API | Set `AppUrls.baseAPIURL` |
 | Go live on auth | Replace the demo block in `AuthRepository.login()` |
@@ -304,7 +295,7 @@ final user = await LoggerService.timed('fetchUser', () => api.getUser()); // ⏱
 
 ---
 
-## ❓ FAQ
+## ◆ FAQ
 
 <details>
 <summary><b>Does it overwrite my existing code?</b></summary>
@@ -317,28 +308,28 @@ adds missing dependencies. Run it on a fresh project (or a branch) for the clean
 <summary><b>Why are firebase_messaging / geolocator included?</b></summary>
 
 LayerX ships a notification + location stack, so those are added to keep everything
-compiling. Prefer a leaner default? Open an issue — an opt-in flag is on the roadmap.
+compiling. Want a leaner default? An opt-in flag is on the roadmap — open an issue.
 </details>
 
 <details>
 <summary><b>Can I use it without installing globally?</b></summary>
 
-Yes — `dart run layerx_generator --path .` works identically.
+Yes — <code>dart run layerx_generator --path .</code> works identically.
 </details>
 
 ---
 
-## 🩺 Troubleshooting
+## ◆ Troubleshooting
 
 | Symptom | Fix |
 |---|---|
 | `flutter: command not found` during enable | Ensure Flutter is on your `PATH`; LayerX falls back to writing `pubspec.yaml` so you can `flutter pub get` manually |
-| Google Fonts not showing in tests | Set `GoogleFonts.config.allowRuntimeFetching = false` in `setUpAll` |
-| Notifications need setup | Uncomment `Firebase.initializeApp()` + `NotificationService.initialize()` in `main.dart` |
+| Google Fonts not showing in tests | `GoogleFonts.config.allowRuntimeFetching = false;` in `setUpAll` |
+| Notifications need setup | Uncomment `Firebase.initializeApp()` + `NotificationService.initialize()` in `main.dart` and add the native permissions |
 
 ---
 
-## ✅ Verified Error-Free
+## ◆ Verified error-free
 
 Every release is validated on a freshly generated project:
 
@@ -350,36 +341,35 @@ flutter test        # All tests passed!
 
 ---
 
-## 🗺️ Roadmap
+## ◆ Roadmap
 
 - [ ] `--with-notifications` opt-in flag for the Firebase/location stack
+- [ ] Native permission patcher (Android manifest + iOS Info.plist)
 - [ ] Optional theme presets
-- [ ] Golden tests for the design system
 - [ ] `layerx add screen <name>` sub-generator
 
 ---
 
-## 🤝 Contributing
+## ◆ Contributing
 
 PRs and issues welcome at
 [the-bughex-code/flutter_layerX](https://github.com/the-bughex-code/flutter_layerX).
-Please run `dart analyze` and `dart test` before opening a PR.
+Run `dart analyze` and `dart test` before opening a PR.
 
-## 🧾 Versioning & Changelog
+## ◆ Versioning &amp; changelog
 
-This project follows [Semantic Versioning](https://semver.org). See
-[CHANGELOG.md](CHANGELOG.md) for release notes.
+Semantic Versioning. See [CHANGELOG.md](CHANGELOG.md) for release notes.
 
-## 📄 License
+## ◆ License
 
 [MIT](LICENSE) © the-bughex-code
 
-## 💙 Acknowledgements
+## ◆ Acknowledgements
 
-Built on the shoulders of [GetX](https://pub.dev/packages/get),
+Standing on the shoulders of [GetX](https://pub.dev/packages/get),
 [flutter_screenutil](https://pub.dev/packages/flutter_screenutil),
 [flutter_animate](https://pub.dev/packages/flutter_animate),
 [google_fonts](https://pub.dev/packages/google_fonts) and
 [logger](https://pub.dev/packages/logger).
 
-<p align="center"><i>Made with clean architecture, not chaos. 🧱</i></p>
+<p align="center"><sub>Made with clean architecture, not chaos. ◆</sub></p>

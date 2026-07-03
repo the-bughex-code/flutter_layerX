@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import '../../../config/app_colors.dart';
 import '../../../config/app_strings.dart';
 import '../../../config/app_text_styles.dart';
+import '../../../config/padding_extensions.dart';
 import '../../../custom_widgets/animations/app_animations.dart';
 import '../../../custom_widgets/buttons/app_button.dart';
 import '../../../custom_widgets/inputs/app_text_field.dart';
@@ -25,23 +26,13 @@ class LoginView extends GetView<LoginController> {
             child: StaggeredColumn(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: 24.h),
                 Container(
                   width: 56.r,
                   height: 56.r,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                    gradient: const LinearGradient(
-                      colors: [AppColors.primary, AppColors.primaryLight],
-                    ),
+                    color: AppColors.primary,
                     borderRadius: BorderRadius.circular(18.r),
-                    boxShadow: [
-                      BoxShadow(
-                        color: AppColors.primary.withValues(alpha: 0.3),
-                        blurRadius: 20,
-                        offset: const Offset(0, 10),
-                      ),
-                    ],
                   ),
                   child: Text(
                     'LX',
@@ -49,17 +40,17 @@ class LoginView extends GetView<LoginController> {
                       color: AppColors.white,
                     ),
                   ),
-                ),
-                SizedBox(height: 24.h),
-                Text(AppStrings.loginTitle, style: AppTextStyles.displayLarge),
-                SizedBox(height: 8.h),
+                ).paddingBottom(24.h),
+                Text(
+                  AppStrings.loginTitle,
+                  style: AppTextStyles.displayLarge,
+                ).paddingBottom(8.h),
                 Text(
                   AppStrings.loginSubtitle,
                   style: AppTextStyles.bodyMedium.copyWith(
                     color: AppColors.textLightBlack,
                   ),
-                ),
-                SizedBox(height: 36.h),
+                ).paddingBottom(36.h),
                 AppTextField(
                   controller: controller.emailController,
                   label: AppStrings.emailLabel,
@@ -69,8 +60,7 @@ class LoginView extends GetView<LoginController> {
                   textInputAction: TextInputAction.next,
                   prefixIcon: const Icon(Icons.mail_outline_rounded),
                   validator: controller.validateEmail,
-                ),
-                SizedBox(height: 20.h),
+                ).paddingBottom(20.h),
                 Obx(
                   () => AppTextField(
                     controller: controller.passwordController,
@@ -92,8 +82,7 @@ class LoginView extends GetView<LoginController> {
                     ),
                     validator: controller.validatePassword,
                   ),
-                ),
-                SizedBox(height: 36.h),
+                ).paddingBottom(36.h),
                 Obx(
                   () => AppButton(
                     label: AppStrings.signIn,
@@ -102,8 +91,7 @@ class LoginView extends GetView<LoginController> {
                     suffixIcon: Icons.arrow_forward_rounded,
                     onPressed: controller.login,
                   ),
-                ),
-                SizedBox(height: 16.h),
+                ).paddingBottom(16.h),
                 Center(
                   child: Text(
                     AppStrings.loginHint,

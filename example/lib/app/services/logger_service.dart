@@ -79,7 +79,7 @@ class LoggerService {
     ];
     final subtitle = tags.isEmpty ? '' : '  •  ${tags.join('  •  ')}';
     _logger.i(
-      '🚀  $name$subtitle\n'
+      '🧱  $name$subtitle\n'
       '✨  Clean architecture · GetX · zero boilerplate\n'
       '🟢  Console ready — happy shipping!',
     );
@@ -98,7 +98,7 @@ class LoggerService {
   /// Logs an outgoing HTTP request.
   static void request(String method, String url, {Object? body}) {
     if (!kDebugMode) return;
-    final buffer = StringBuffer('🚀 → $method  $url');
+    final buffer = StringBuffer('📤 $method  $url');
     if (body != null) buffer.write('\n📦 Body: ${_safeJson(body)}');
     _logger.d(buffer.toString());
   }
