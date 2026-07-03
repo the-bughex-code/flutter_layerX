@@ -3,121 +3,97 @@ part of 'package:layerx_generator/src/layerx_generator.dart';
 
 extension _RepositoriesPart on LayerXGenerator {
   Future<void> _createRepositoryFiles(String appDirPath) async {
-    final authRepoDir = Directory(
-      path.join(appDirPath, 'repository', 'auth_repo'),
-    );
-    final apiRepoDir = Directory(path.join(appDirPath, 'repository', 'apis'));
+    final repoDir = Directory(path.join(appDirPath, 'repository'));
+    final apiRepoDir = Directory(path.join(repoDir.path, 'apis'));
 
-    await authRepoDir.create(recursive: true);
+    await repoDir.create(recursive: true);
     await apiRepoDir.create(recursive: true);
 
+    // Keep the placeholder data-source folders under version control (empty
+    // directories are not tracked by git or included in a published package).
+    for (final sub in ['firebase', 'localdb']) {
+      final dir = Directory(path.join(repoDir.path, sub));
+      await dir.create(recursive: true);
+      await File(path.join(dir.path, '.gitkeep')).writeAsString(
+        '# Placeholder — add your $sub data sources here.\n',
+      );
+    }
 
+    // Top-level auth repository (repository/auth_repository.dart).
     await File(
-      path.join(authRepoDir.path, 'auth_repository.dart'),
-    ).writeAsString('''
-import '../../config/app_urls.dart';
-import '../../mvvm/model/api_response_model/api_response.dart';
-import '../../mvvm/model/body_model/driver_signup_body_model.dart';
-import '../../mvvm/model/body_model/garage_signup_body_model.dart';
-import '../../services/api_response_handler.dart';
-import '../../services/https_calls.dart';
-import '../../services/logger_service.dart';
+      path.join(repoDir.path, 'auth_repository.dart'),
+    ).writeAsString(r'''
+import 'dart:convert';
 
+import '../config/app_urls.dart';
+import '../mvvm/model/api_response_model/api_response.dart';
+import '../mvvm/model/body_model/login_request_model.dart';
+import '../mvvm/model/response_model/login_response_model.dart';
+import '../services/https_calls.dart';
+
+/// Repository for authentication-related API calls.
+///
+/// Repositories are the only layer that talks to [HttpsCalls]; controllers
+/// depend on repositories, never on the network client directly. [HttpsCalls]
+/// is injected so it can be swapped for a fake in tests.
 class AuthRepository {
-  final HttpsCalls _httpsCalls = HttpsCalls();
+  AuthRepository({HttpsCalls? httpsCalls})
+      : _httpsCalls = httpsCalls ?? HttpsCalls();
 
-  // ================= DRIVER =================
+  final HttpsCalls _httpsCalls;
 
-  // Future<ApiResponse<void>> driverSignUpApi(
-  //     DriverSignupBodyModel body) async {
-  //   try {
-  //     const endPoint = AppUrls.signup;
-  //     LoggerService.d('Driver signup → \$endPoint');
-  //     final response =
-  //         await _httpsCalls.multipartDriverProfileApiHits(endPoint, body);
-  //     return ApiResponseHandler.process(response, endPoint, (_) {});
-  //   } catch (e, st) {
-  //     ApiResponseHandler.logUnhandledError(e, st);
-  //     rethrow;
-  //   }
-  // }
+  /// Demo login — accepts any credentials so the sample runs without a
+  /// backend. Delete the demo block and uncomment the real call to go live.
+  Future<ApiResponse<LoginResponseModel>> login(
+    LoginRequestModel request,
+  ) async {
+    await Future<void>.delayed(const Duration(milliseconds: 600));
 
-  // Future<ApiResponse<void>> updateDriver(
-  //     DriverSignupBodyModel body) async {
-  //   try {
-  //     const endPoint = AppUrls.updateAccount;
-  //     LoggerService.d('Driver update → \$endPoint');
-  //     final response =
-  //         await _httpsCalls.multipartDriverProfileApiHits(endPoint, body);
-  //     return ApiResponseHandler.process(response, endPoint, (_) {});
-  //   } catch (e, st) {
-  //     ApiResponseHandler.logUnhandledError(e, st);
-  //     rethrow;
-  //   }
-  // }
+    // Real implementation:
+    // final response = await _httpsCalls.postApiHits(
+    //   AppUrls.login, utf8.encode(jsonEncode(request.toJson())));
+    // return ApiResponseHandler.process(response, AppUrls.login,
+    //     (json) => LoginResponseModel.fromJson(json as Map<String, dynamic>));
 
-  // ================= GARAGE =================
+    return ApiResponse<LoginResponseModel>(
+      success: true,
+      message: 'Login successful',
+      data: LoginResponseModel(
+        token: 'demo-token',
+        name: request.email.contains('@')
+            ? request.email.split('@').first
+            : request.email,
+      ),
+    );
+  }
 
-  // Future<ApiResponse<void>> garageSignUpApi(
-  //     GarageSignupBodyModel body) async {
-  //   try {
-  //     const endPoint = AppUrls.signup;
-  //     LoggerService.d('Garage signup → \$endPoint');
-  //     final response =
-  //         await _httpsCalls.multipartGarageProfileApiHits(endPoint, body);
-  //     return ApiResponseHandler.process(response, endPoint, (_) {});
-  //   } catch (e, st) {
-  //     ApiResponseHandler.logUnhandledError(e, st);
-  //     rethrow;
-  //   }
-  // }
+  /// Invalidates the current session on the backend.
+  Future<ApiResponse<void>> logout() async {
+    final response =
+        await _httpsCalls.postApiHits(AppUrls.logout, utf8.encode('{}'));
+    return ApiResponse<void>(success: response.statusCode == 200);
+  }
 }
 ''');
 
-    // ================= DATA REPOSITORY =================
-
+    // API repositories live under repository/apis/.
     await File(
       path.join(apiRepoDir.path, 'data_repository.dart'),
-    ).writeAsString('''
-import '../../config/app_urls.dart';
+    ).writeAsString(r'''
 import '../../mvvm/model/api_response_model/api_response.dart';
-import '../../mvvm/model/body_model/add_car_body_model.dart';
-import '../../mvvm/model/body_model/buy_car_request_model.dart';
-import '../../services/api_response_handler.dart';
 import '../../services/https_calls.dart';
-import '../../services/logger_service.dart';
 
+/// Repository for general data/API calls.
 class DataRepository {
-  final HttpsCalls _httpsCalls = HttpsCalls();
+  DataRepository({HttpsCalls? httpsCalls})
+      : _httpsCalls = httpsCalls ?? HttpsCalls();
 
-  // ================= ADD CAR =================
+  final HttpsCalls _httpsCalls;
 
-  Future<ApiResponse<void>> addCarApi(AddCarBodyModel body) async {
-    try {
-      const endPoint = AppUrls.signup; // TODO: replace endpoint
-      LoggerService.d('Add car → \$endPoint');
-      final response =
-          await _httpsCalls.crudCarMultipartApi(endPoint, body);
-      return ApiResponseHandler.process(response, endPoint, (_) {});
-    } catch (e, st) {
-      ApiResponseHandler.logUnhandledError(e, st);
-      rethrow;
-    }
-  }
-
-  // ================= BUY CAR =================
-
-  Future<ApiResponse<void>> buyCarApi(BuyCarRequestModel body) async {
-    try {
-      const endPoint = AppUrls.signup; // TODO: replace endpoint
-      LoggerService.d('Buy car → \$endPoint');
-      final response =
-          await _httpsCalls.multipartBuyCarRequestApi(endPoint, body);
-      return ApiResponseHandler.process(response, endPoint, (_) {});
-    } catch (e, st) {
-      ApiResponseHandler.logUnhandledError(e, st);
-      rethrow;
-    }
+  /// Sample endpoint — replace with your real data calls.
+  Future<ApiResponse<void>> fetchExample() async {
+    final response = await _httpsCalls.getApiHits('example');
+    return ApiResponse<void>(success: response.statusCode == 200);
   }
 }
 ''');

@@ -6,45 +6,81 @@ extension _ServicesPart on LayerXGenerator {
     final servicesDir = Directory(path.join(appDirPath, 'services'));
 
     await File(
-      path.join(servicesDir.path, 'logger_service.dart'),
+      path.join(servicesDir.path, 'haptic_service.dart'),
     ).writeAsString('''
-import 'package:flutter/foundation.dart';
-import 'package:intl/intl.dart';
-import 'package:logger/logger.dart';
+import 'package:flutter/services.dart';
 
-/// Custom log printer with enhanced formatting and timestamps.
-class CustomPrinter extends LogPrinter {
-  final PrettyPrinter _prettyPrinter;
+/// Centralized haptic feedback.
+///
+/// Call these instead of [HapticFeedback] directly so intensity stays
+/// consistent across the app. [success] and [error] are short multi-tap
+/// patterns rather than single impacts.
+class HapticService {
+  const HapticService._();
 
-  CustomPrinter()
-      : _prettyPrinter = PrettyPrinter(
-          methodCount: 1,
-          errorMethodCount: 6,
-          lineLength: 120,
-          colors: true,
-          printEmojis: true,
-        );
+  static Future<void> light() => HapticFeedback.lightImpact();
 
-  @override
-  List<String> log(LogEvent event) {
-    final output = _prettyPrinter.log(event);
-    final formattedTime =
-        DateFormat('dd-MM-yyyy hh:mm:ss a').format(DateTime.now());
-    final levelName = event.level.name.toUpperCase();
-    return output
-        .map((line) => '[📅 \$formattedTime] [\$levelName] \$line')
-        .toList();
+  static Future<void> medium() => HapticFeedback.mediumImpact();
+
+  static Future<void> heavy() => HapticFeedback.heavyImpact();
+
+  static Future<void> selection() => HapticFeedback.selectionClick();
+
+  static Future<void> success() async {
+    await HapticFeedback.mediumImpact();
+    await Future<void>.delayed(const Duration(milliseconds: 90));
+    await HapticFeedback.lightImpact();
+  }
+
+  static Future<void> error() async {
+    await HapticFeedback.heavyImpact();
+    await Future<void>.delayed(const Duration(milliseconds: 110));
+    await HapticFeedback.heavyImpact();
   }
 }
+''');
 
+    await File(
+      path.join(servicesDir.path, 'logger_service.dart'),
+    ).writeAsString(r'''
+import 'dart:convert';
+
+import 'package:flutter/foundation.dart';
+import 'package:logger/logger.dart';
+
+/// A developer-friendly logging console for the LayerX app.
+///
+/// Wraps the `logger` package with a colorful, emoji-tagged printer and adds
+/// helpers for HTTP request/response logs, pretty JSON, section dividers and
+/// execution timing. All output is gated behind [kDebugMode], so nothing is
+/// printed in release builds.
 class LoggerService {
   LoggerService._();
 
+  static const JsonEncoder _encoder = JsonEncoder.withIndent('  ');
+
   static final Logger _logger = Logger(
     filter: ProductionFilter(),
-    printer: CustomPrinter(),
     level: kDebugMode ? Level.trace : Level.warning,
+    printer: PrettyPrinter(
+      methodCount: 0,
+      errorMethodCount: 6,
+      lineLength: 100,
+      colors: true,
+      printEmojis: true,
+      dateTimeFormat: DateTimeFormat.onlyTimeAndSinceStart,
+      levelEmojis: {
+        Level.trace: '🔍',
+        Level.debug: '🐛',
+        Level.info: '💡',
+        Level.warning: '⚠️',
+        Level.error: '❌',
+        Level.fatal: '💀',
+      },
+    ),
   );
+
+  // ---- Core levels (backward compatible) --------------------------------
 
   static void d(dynamic message, {Object? error, StackTrace? stackTrace}) {
     if (kDebugMode) _logger.d(message, error: error, stackTrace: stackTrace);
@@ -60,6 +96,77 @@ class LoggerService {
 
   static void e(dynamic message, {Object? error, StackTrace? stackTrace}) {
     if (kDebugMode) _logger.e(message, error: error, stackTrace: stackTrace);
+  }
+
+  // ---- Developer console helpers ----------------------------------------
+
+  /// A success line.
+  static void s(dynamic message) {
+    if (kDebugMode) _logger.i('✅ $message');
+  }
+
+  /// A labelled section divider.
+  static void divider([String title = '']) {
+    if (!kDebugMode) return;
+    _logger.i(title.isEmpty
+        ? '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+        : '━━━━━ $title ━━━━━');
+  }
+
+  /// Pretty-prints any JSON-encodable value.
+  static void json(Object? data, {String label = 'JSON'}) {
+    if (kDebugMode) _logger.i('🧾 $label\n${_safeJson(data)}');
+  }
+
+  /// Logs an outgoing HTTP request.
+  static void request(String method, String url, {Object? body}) {
+    if (!kDebugMode) return;
+    final buffer = StringBuffer('🚀 → $method  $url');
+    if (body != null) buffer.write('\n📦 Body: ${_safeJson(body)}');
+    _logger.d(buffer.toString());
+  }
+
+  /// Logs an incoming HTTP response.
+  static void response(
+    int statusCode,
+    String url, {
+    Object? body,
+    Duration? elapsed,
+  }) {
+    if (!kDebugMode) return;
+    final ok = statusCode >= 200 && statusCode < 300;
+    final time = elapsed == null ? '' : ' • ${elapsed.inMilliseconds}ms';
+    final buffer = StringBuffer('${ok ? '✅' : '❌'} ← $statusCode  $url$time');
+    if (body != null) buffer.write('\n📦 ${_safeJson(body)}');
+    ok ? _logger.i(buffer.toString()) : _logger.e(buffer.toString());
+  }
+
+  /// Runs [action], logging how long it took (and any failure).
+  static Future<T> timed<T>(String label, Future<T> Function() action) async {
+    final stopwatch = Stopwatch()..start();
+    try {
+      final result = await action();
+      stopwatch.stop();
+      if (kDebugMode) {
+        _logger.i('⏱️ $label took ${stopwatch.elapsedMilliseconds}ms');
+      }
+      return result;
+    } catch (error, stackTrace) {
+      stopwatch.stop();
+      if (kDebugMode) {
+        _logger.e('⏱️ $label failed after ${stopwatch.elapsedMilliseconds}ms',
+            error: error, stackTrace: stackTrace);
+      }
+      rethrow;
+    }
+  }
+
+  static String _safeJson(Object? data) {
+    try {
+      return _encoder.convert(data);
+    } catch (_) {
+      return '$data';
+    }
   }
 }
 ''');
@@ -236,7 +343,7 @@ class LocationService {
     }
 
     return Geolocator.getCurrentPosition(
-      desiredAccuracy: LocationAccuracy.high,
+      locationSettings: const LocationSettings(accuracy: LocationAccuracy.high),
     );
   }
 }
@@ -248,8 +355,7 @@ class LocationService {
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
-import '../config/app_routes.dart';
-import '../customWidgets/custom_dialogs/no_internetdialog.dart';
+import '../custom_widgets/dialogs/no_internet_dialog.dart';
 import '../mvvm/model/api_response_model/api_response.dart';
 import 'json_extractor.dart';
 import 'logger_service.dart';
@@ -269,7 +375,7 @@ class ApiResponseHandler {
         final parsedJson = response.body.length > 100000
             ? await compute<String, dynamic>(_parseJson, response.body)
             : jsonDecode(response.body);
-        LoggerService.i('✅ API response processed: "endPoint"');
+        LoggerService.i('✅ API response processed: \$endPoint');
         return ApiResponse<T>.fromJson(parsedJson, fromJson);
 
       case 401:
@@ -283,12 +389,12 @@ class ApiResponseHandler {
         return _handleError<T>(response, 'Internal Server Error');
 
       case 503:
-        return _handleNoInternet();
+        return _handleNoInternet<T>();
 
       default:
         return _handleError<T>(
           response,
-          'API Error: "{response.statusCode} - {response.reasonPhrase}"',
+          'API Error: \${response.statusCode} - \${response.reasonPhrase}',
         );
     }
 
@@ -313,20 +419,24 @@ class ApiResponseHandler {
     throw Exception('Unauthorized access. Please log in.');
   }
 
-  static _handleNoInternet() {
+  static ApiResponse<T> _handleNoInternet<T>() {
     LoggerService.w('📴 No internet detected (503)');
     if (!(Get.isDialogOpen ?? false)) {
       Future.delayed(Duration.zero, () {
         NoInternetDialog.show(
-          title: "Network Error",
+          title: 'Network Error',
           message:
-              "Unable to connect to the server. Please check your internet connection and try again.",
-          closeText: "Dismiss",
+              'Unable to connect to the server. Please check your internet '
+              'connection and try again.',
+          closeText: 'Dismiss',
           onClose: () {},
         );
       });
-      throw Exception('No internet connection. Please try again.');
     }
+    return ApiResponse<T>(
+      success: false,
+      message: 'No internet connection. Please try again.',
+    );
   }
 
   static ApiResponse<T> _handleError<T>(dynamic response, String errorMessage) {

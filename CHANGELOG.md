@@ -4,6 +4,55 @@ All notable changes to the `layerx_generator` Flutter package are documented in 
 This project follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) and adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+## [2.1.0] – 2026-07-03
+
+A major production-hardening release. A freshly enabled project now passes
+`flutter pub get`, `flutter analyze` and `flutter test` with **zero** errors or
+warnings, out of the box.
+
+### Added
+- **`layerx enable` command** — installs every required dependency via
+  `flutter pub add` (latest compatible versions) and generates the structure in
+  one step. The legacy `dart run layerx_generator --path .` still works.
+- **Automatic dependency installation** — GetX, ScreenUtil, `flutter_animate`,
+  Google Fonts, `logger`, `intl`, `http`, `shared_preferences`,
+  `permission_handler`, notification & location packages are all added and
+  resolved automatically (with a graceful fallback when Flutter isn't on `PATH`).
+- **Design system** under `custom_widgets/`: `AppButton` (press animation,
+  gradient, icons, loading, haptics), `AppTextField` (validation, label,
+  required marker, prefix/suffix, focus & error styling, shadow), extension-based
+  snackbars (`'msg'.showSuccess()`), and animation wrappers (`FadeSlideIn`,
+  `SpringIn`, `PressableScale`, `FloatingEffect`, `StaggeredColumn`).
+- **`AppTextStyles`** premium typography (Inter/Rubik/Sarabun via Google Fonts,
+  SF Pro on Apple platforms).
+- **`HapticService`** — centralized light/medium/heavy/selection/success/error.
+- **Polished demo** — Splash → Login → Home, with repository-injected
+  controllers and `LoginRequestModel` / `LoginResponseModel`.
+- **Modern logger console** — colored, emoji-tagged output with
+  request/response/JSON/divider helpers and execution timing.
+
+### Changed
+- Routing now declares bindings inline via `BindingsBuilder` — no separate
+  binding files.
+- Repository layout refined to `repository/{apis,firebase,localdb}` plus a
+  top-level `auth_repository.dart`.
+- Controllers consume repositories through their constructors.
+- `analysis_options.yaml` now excludes `build/**` so SPM-resolved plugins don't
+  pollute `flutter analyze`.
+
+### Fixed
+- Dependencies are actually resolved (previously written to `pubspec.yaml` but
+  never fetched), plus the previously-missing `firebase_messaging`, `geolocator`
+  and `googleapis_auth`.
+- API drift against current package versions (`flutter_timezone` `TimezoneInfo`,
+  `flutter_local_notifications` scheduling, `geolocator` `LocationSettings`).
+- Generated `test/widget_test.dart` no longer references the removed `MyApp`.
+- Removed stale placeholder repositories and the unused `AppTheme`.
+
+### Removed
+- `AppTheme` is no longer generated (styling is kept lightweight).
+
+---
 ## [2.0.2] – 2025-08-24
 
 - Added **Notification Services module** under `services/notifications`.

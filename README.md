@@ -1,65 +1,74 @@
 # LayerX Generator
 
-## Overview
+Bootstrap a **production-ready Flutter architecture** in seconds.
 
-`layerx_generator` helps you bootstrap Flutter projects with a **production-ready LayerX architecture**.  
-It generates a structured `lib/app/` directory following MVVM principles, preconfigured with GetX,
-core services, and extensible modules—so you can focus on building features instead of setup.
+`layerx_generator` scaffolds a clean, opinionated `lib/app/` structure — MVVM +
+GetX, a resilient networking layer, reusable services, a polished design system
+and a working Splash → Login → Home demo — and installs every dependency it
+needs. A freshly enabled project passes `flutter pub get`, `flutter analyze` and
+`flutter test` with **zero errors or warnings**, out of the box.
 
 ---
 
-## Key Features
+## Highlights
 
-- **LayerX MVVM Structure** – Organized `model`, `view`, and `view_model` layers
-- **GetX Ready** – Navigation, bindings, and state management preconfigured
-- **Core Services Included** – HTTP service, shared preferences helper, and JSON extractor
-- **Notification Infrastructure (v2.0.2)** – Notification-ready services without forcing Firebase setup
-- **Responsive UI Support** – Designed to work seamlessly with `flutter_screenutil`
-- **Flexible Usage** – Run via CLI or programmatically
+- **One command setup** — `layerx enable` installs dependencies and generates
+  everything. No manual fixes, no missing packages, no analyzer errors.
+- **Automatic dependencies** — GetX, ScreenUtil, `flutter_animate`, Google
+  Fonts, `logger`, `intl`, `http`, `shared_preferences`, `permission_handler`
+  and the notification/location stack are added at their latest compatible
+  versions.
+- **MVVM + GetX** — views, controllers, models and repositories, with routing
+  and dependency injection wired in.
+- **Design system** — `AppButton`, `AppTextField`, extension snackbars, haptics,
+  animation wrappers and a responsive `AppTextStyles` typography scale.
+- **Polished demo** — Splash → Login → Home, with a constructor-injected
+  `AuthRepository` you can wire to a real backend.
+- **Modern logger console** — colored, emoji-tagged logs with request/response,
+  JSON and execution-time helpers.
 
 ---
 
 ## Installation
 
-Add the dependency to your `pubspec.yaml`:
-
-```yaml
-dependencies:
-  layerx_generator: ^2.0.2
-````
-
-Then install dependencies:
+Activate the CLI once:
 
 ```sh
-flutter pub get
+dart pub global activate layerx_generator
+```
+
+Then, from your Flutter project root:
+
+```sh
+layerx enable
+```
+
+That installs all required dependencies and generates the LayerX structure.
+Run your app:
+
+```sh
+flutter run
+```
+
+> Prefer not to install globally? The classic invocation still works:
+> `dart run layerx_generator --path .`
+
+### Options
+
+```sh
+layerx enable --path .     # target a specific project directory
+layerx enable --no-deps    # generate files without installing dependencies
 ```
 
 ---
 
-## Usage
-
-### CLI
-
-Generate the LayerX structure in your project root by running:
-
-```sh
-dart run layerx_generator --path .
-```
-
-This command creates the complete LayerX (MVVM) architecture under `lib/app/`
-without modifying your existing `pubspec.yaml`.
-
----
-
-### Programmatic
-
-You can also invoke the generator programmatically:
+## Programmatic usage
 
 ```dart
 import 'package:layerx_generator/layerx_generator.dart';
 import 'dart:io';
 
-void main() async {
+Future<void> main() async {
   final generator = LayerXGenerator(Directory.current.path);
   await generator.generate();
 }
@@ -67,90 +76,101 @@ void main() async {
 
 ---
 
-## Generated Structure
+## What you get
 
 ```text
 lib/app/
-├── config/
+├── app_widget.dart              # ScreenUtil + GetMaterialApp
+├── config/                      # colors, strings, routes, text styles, urls, utils
 ├── mvvm/
-│   ├── model/
-│   ├── view/
-│   └── view_model/
+│   ├── model/                   # api_response, login_request/response models
+│   ├── view/                    # splash, login, home
+│   └── view_model/              # splash, login, home controllers
 ├── repository/
-│   ├── auth_repo/
+│   ├── auth_repository.dart
+│   ├── apis/                    # data_repository.dart
 │   ├── firebase/
-│   ├── local_db/
-│   └── apis/
-├── services/
-│   ├── notifications/
-│   ├── xyz/
-│   ├── xyz/
-│   ├── xyz/
-│   └── xyz/
-└── widgets/
+│   └── localdb/
+├── services/                    # logger, haptics, prefs, http, json, location
+│   └── notifications/           # FCM + local notifications
+├── custom_widgets/
+│   ├── buttons/                 # AppButton
+│   ├── inputs/                  # AppTextField
+│   ├── snackbars/               # 'msg'.showSuccess()
+│   ├── animations/              # FadeSlideIn, SpringIn, …
+│   └── dialogs/                 # NoInternetDialog
+└── ...
 ```
 
-### Additionally
+`main.dart` is updated to boot the app and `test/widget_test.dart` is regenerated
+for the new entry point.
 
-* `app_widget.dart` is configured with **GetX** and **ScreenUtil**
-* `main.dart` is updated to bootstrap the app correctly
+---
+
+## Design system at a glance
+
+```dart
+// Buttons
+AppButton(label: 'Sign In', onPressed: controller.login, isLoading: true);
+
+// Inputs
+AppTextField(label: 'Email', isRequired: true, validator: controller.validateEmail);
+
+// Snackbars (extension on String)
+'Login successful'.showSuccess();
+'Please try again'.showError();
+
+// Haptics
+HapticService.success();
+
+// Typography — never write a raw TextStyle in a view
+Text('Welcome', style: AppTextStyles.displayLarge);
+
+// Animations
+FadeSlideIn(child: myWidget);
+```
+
+---
+
+## Routing
+
+Routes and inline bindings live in `config/app_routes.dart` — no separate binding
+files:
+
+```dart
+GetPage(
+  name: AppRoutes.loginView,
+  page: () => const LoginView(),
+  binding: BindingsBuilder(() {
+    Get.lazyPut<AuthRepository>(() => AuthRepository());
+    Get.lazyPut<LoginController>(() => LoginController(Get.find<AuthRepository>()));
+  }),
+);
+```
+
+---
+
+## Verified error-free
+
+Every generated project is validated to pass:
+
+```sh
+flutter pub get
+flutter analyze   # No issues found!
+flutter test      # All tests passed!
+```
 
 ---
 
 ## Example
 
-A complete working example is available in the `example/` directory.
-
----
+A complete working example lives in the [`example/`](example) directory.
 
 ## Changelog
 
-### 2.0.2 – 2025-08-24
-
-* Added notification services under `services/notifications`
-* FCM permission handling and local notification hooks
-* Foreground, background, and notification-tap handling
-* Timezone-aware scheduled notifications
-* Device token utilities and secure FCM server key helper
-* Notification-ready setup without mandatory Firebase initialization
-
-### 2.0.1
-
-* Optimized HTTP networking
-* Improved concurrency, retries, caching, and observability
-
-### 2.0.0
-
-* Removed automatic `pubspec.yaml` modification to avoid overwriting user configs
-
----
+See [CHANGELOG.md](CHANGELOG.md).
 
 ## Contributing
 
-Contributions, issues, and feature requests are welcome.
-Feel free to open a pull request or issue on GitHub.
-
----
-
-## Maintainer
-
-**Umair Hashmi**
-GitHub: [https://github.com/umair-hashmii](https://github.com/umair-hashmii)
-
----
-
-## Resources
-
-* LayerX Website: [https://layer-x.netlify.app/](https://layer-x.netlify.app/)
-* GitHub Repository: [https://github.com/the-bughex-code/flutter_layerX](https://github.com/the-bughex-code/flutter_layerX)
-* Architecture Blog: [https://medium.com/@iam.umairimran/layerx-architecture-8e9415d9d624](https://medium.com/@iam.umairimran/layerx-architecture-8e9415d9d624)
-
----
-
-## License
-
-Licensed under the **BSD 3-Clause License**.
-See the `LICENSE` file for details.
-
-
-
+Issues and pull requests are welcome at
+[the-bughex-code/flutter_layerX](https://github.com/the-bughex-code/flutter_layerX).

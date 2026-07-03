@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'config/app_colors.dart';
 
+import 'config/app_colors.dart';
+import 'config/app_routes.dart';
+import 'config/config.dart';
+
+/// Root widget of the LayerX application.
+///
+/// Wires up [ScreenUtil] for responsive sizing and GetX for navigation and
+/// state management. Styling is intentionally lightweight — extend the
+/// [ThemeData] below or introduce your own design tokens as the app grows.
 class LayerXApp extends StatelessWidget {
   const LayerXApp({super.key});
 
@@ -10,18 +18,19 @@ class LayerXApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScreenUtilInit(
       designSize: const Size(375, 812),
-      useInheritedMediaQuery: true,
       minTextAdapt: true,
       splitScreenMode: true,
-      builder: (context, child) {
+      builder: (_, _) {
         return GetMaterialApp(
           debugShowCheckedModeBanner: false,
+          title: AppConfig.appName,
           theme: ThemeData(
-            colorScheme: ColorScheme.fromSeed(seedColor: AppColors.primary),
             useMaterial3: true,
+            colorSchemeSeed: AppColors.primary,
+            scaffoldBackgroundColor: AppColors.bgColor,
           ),
-          // initialRoute: AppRoutes.splashView,
-          // getPages: AppPages.routes,
+          initialRoute: AppRoutes.splashView,
+          getPages: AppPages.routes,
         );
       },
     );

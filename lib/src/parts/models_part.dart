@@ -6,109 +6,66 @@ extension _ModelsPart on LayerXGenerator {
     final bodyModelDir = Directory(
       path.join(appDirPath, 'mvvm', 'model', 'body_model'),
     );
+    final responseModelDir = Directory(
+      path.join(appDirPath, 'mvvm', 'model', 'response_model'),
+    );
     final apiResponseModelDir = Directory(
       path.join(appDirPath, 'mvvm', 'model', 'api_response_model'),
     );
 
-    await File(
-      path.join(bodyModelDir.path, 'test_body_model.dart'),
-    ).writeAsString('''
-/// Basic test body model (JSON only).
-class TestBodyModel {
-  String? name;
-  String? email;
+    await bodyModelDir.create(recursive: true);
+    await responseModelDir.create(recursive: true);
+    await apiResponseModelDir.create(recursive: true);
 
-  TestBodyModel({
-    this.name,
-    this.email,
+    // ---- Request body model -------------------------------------------------
+    await File(
+      path.join(bodyModelDir.path, 'login_request_model.dart'),
+    ).writeAsString(r'''
+/// Request body for the login endpoint.
+class LoginRequestModel {
+  const LoginRequestModel({
+    required this.email,
+    required this.password,
   });
 
-  factory TestBodyModel.fromJson(Map<String, dynamic> json) => TestBodyModel(
+  final String email;
+  final String password;
+
+  Map<String, dynamic> toJson() => {
+        'email': email,
+        'password': password,
+      };
+}
+''');
+
+    // ---- Response model -----------------------------------------------------
+    await File(
+      path.join(responseModelDir.path, 'login_response_model.dart'),
+    ).writeAsString(r'''
+/// Parsed `data` payload returned by the login endpoint.
+class LoginResponseModel {
+  const LoginResponseModel({this.token, this.name});
+
+  final String? token;
+  final String? name;
+
+  factory LoginResponseModel.fromJson(Map<String, dynamic> json) =>
+      LoginResponseModel(
+        token: json['token'] as String?,
         name: json['name'] as String?,
-        email: json['email'] as String?,
       );
 
   Map<String, dynamic> toJson() => {
+        'token': token,
         'name': name,
-        'email': email,
       };
 }
 ''');
 
-    // ✅ TEST UPLOAD BODY MODEL (single file)
-    await File(
-      path.join(bodyModelDir.path, 'test_upload_body_model.dart'),
-    ).writeAsString('''
-import 'dart:io';
-
-/// Test body model with single file upload support.
-class TestUploadBodyModel {
-  String? title;
-  File? file;
-
-  TestUploadBodyModel({
-    this.title,
-    this.file,
-  });
-
-  Map<String, dynamic> toJson() => {
-        'title': title,
-      };
-}
-''');
-
-    // ✅ TEST REQUEST BODY MODEL (another simple sample)
-    await File(
-      path.join(bodyModelDir.path, 'test_request_body_model.dart'),
-    ).writeAsString('''
-import 'dart:io';
-
-/// Test request model with basic multipart structure.
-class TestRequestBodyModel {
-  String? note;
-  File? image;
-
-  TestRequestBodyModel({
-    this.note,
-    this.image,
-  });
-
-  Map<String, dynamic> toJson() => {
-        'note': note,
-      };
-}
-''');
-
-    // ✅ TEST MULTIPART BODY MODEL (multiple docs)
-    await File(
-      path.join(bodyModelDir.path, 'test_multipart_body_model.dart'),
-    ).writeAsString('''
-import 'dart:io';
-
-/// Test multipart model showing all common file fields.
-class TestMultipartBodyModel {
-  String? title;
-  File? image;
-  File? document;
-  List<File>? documents;
-
-  TestMultipartBodyModel({
-    this.title,
-    this.image,
-    this.document,
-    this.documents,
-  });
-
-  Map<String, dynamic> toJson() => {
-        'title': title,
-      };
-}
-''');
-
-    // ✅ API RESPONSE MODEL (core)
+    // ---- Generic API envelope (unchanged public behavior) -------------------
     await File(
       path.join(apiResponseModelDir.path, 'api_response.dart'),
-    ).writeAsString('''
+    ).writeAsString(r'''
 /// Generic API response model for flexible data parsing.
 class ApiResponse<T> {
   final bool? success;

@@ -21,6 +21,7 @@ abstract class AppColors {
   AppColors._();
 
   static const Color primary = Color(0xff2D9BFF);
+  static const Color primaryLight = Color(0xff5B7FFF);
   static const Color secondaryWhite = Color(0xffFFFFFF);
   static const Color secondaryBlack = Color(0xff1B1C1E);
 
@@ -29,6 +30,7 @@ abstract class AppColors {
 
   static const Color positiveGreen = Color(0xff21D575);
   static const Color negativeRed = Color(0xffEA4334);
+  static const Color warning = Color(0xffFFB020);
 
   static const Color textDarkColor = Color(0xff1B0036);
   static const Color textLightBlack = Color(0xff777E90);
@@ -51,19 +53,27 @@ enum UserRole { user, business }
     await File(path.join(configDir.path, 'app_routes.dart')).writeAsString('''
 import 'package:get/get.dart';
 
-import '../mvvm/view/splash/splash_view.dart';
+import '../mvvm/view/home/home_view.dart';
 import '../mvvm/view/login/login_view.dart';
-import '../mvvm/view_model/splash/splash_binding.dart';
-import '../mvvm/view_model/login/login_binding.dart';
+import '../mvvm/view/splash/splash_view.dart';
+import '../mvvm/view_model/home/home_controller.dart';
+import '../mvvm/view_model/login/login_controller.dart';
+import '../mvvm/view_model/splash/splash_controller.dart';
+import '../repository/auth_repository.dart';
 
-/// Defines navigation routes for the LayerX app.
+/// Route names for the LayerX app.
 abstract class AppRoutes {
   AppRoutes._();
 
   static const splashView = '/';
   static const loginView = '/login';
+  static const homeView = '/home';
 }
 
+/// Route table for the LayerX app.
+///
+/// Dependencies are wired inline with [BindingsBuilder] — LayerX does not use
+/// separate binding files. Repositories are injected into controllers here.
 abstract class AppPages {
   AppPages._();
 
@@ -71,82 +81,29 @@ abstract class AppPages {
     GetPage(
       name: AppRoutes.splashView,
       page: () => const SplashView(),
-      binding: SplashBinding(),
+      binding: BindingsBuilder(() {
+        Get.put(SplashController());
+      }),
     ),
     GetPage(
       name: AppRoutes.loginView,
       page: () => const LoginView(),
-      binding: LoginBinding(),
+      binding: BindingsBuilder(() {
+        Get.lazyPut<AuthRepository>(() => AuthRepository());
+        Get.lazyPut<LoginController>(
+          () => LoginController(Get.find<AuthRepository>()),
+        );
+      }),
+    ),
+    GetPage(
+      name: AppRoutes.homeView,
+      page: () => const HomeView(),
+      binding: BindingsBuilder(() {
+        Get.lazyPut<HomeController>(() => HomeController());
+      }),
     ),
   ];
 }
-''');
-
-    await File(path.join(configDir.path, 'app_theme.dart')).writeAsString('''
-// import 'package:flutter/material.dart';
-// import 'package:flutter_screenutil/flutter_screenutil.dart';
-// import 'package:google_fonts/google_fonts.dart';
-//
-// import 'app_colors.dart';
-//
-// abstract class AppTheme {
-//   AppTheme._();
-//
-//   static const _primaryColor = AppColors.primary;
-//   static const _borderRadius = 12.0;
-//
-//   static final ThemeData lightTheme = ThemeData(
-//     useMaterial3: true,
-//     brightness: Brightness.light,
-//     primaryColor: _primaryColor,
-//     scaffoldBackgroundColor: AppColors.secondaryWhite,
-//     colorScheme: const ColorScheme.light(primary: _primaryColor),
-//     appBarTheme: AppBarTheme(
-//       elevation: 0,
-//       backgroundColor: AppColors.secondaryWhite,
-//       foregroundColor: AppColors.textDarkColor,
-//       titleTextStyle: GoogleFonts.poppins(
-//         fontSize: 18.sp,
-//         fontWeight: FontWeight.w600,
-//         color: AppColors.textDarkColor,
-//       ),
-//     ),
-//     textTheme: GoogleFonts.poppinsTextTheme(),
-//     cardTheme: CardTheme(
-//       color: AppColors.secondaryWhite,
-//       elevation: 2,
-//       shape: RoundedRectangleBorder(
-//         borderRadius: BorderRadius.circular(_borderRadius),
-//       ),
-//     ),
-//   );
-//
-//   static final ThemeData darkTheme = ThemeData(
-//     useMaterial3: true,
-//     brightness: Brightness.dark,
-//     primaryColor: _primaryColor,
-//     scaffoldBackgroundColor: AppColors.darkBgColor,
-//     colorScheme: const ColorScheme.dark(primary: _primaryColor),
-//     appBarTheme: AppBarTheme(
-//       elevation: 0,
-//       backgroundColor: AppColors.darkBgColor,
-//       foregroundColor: AppColors.secondaryWhite,
-//       titleTextStyle: GoogleFonts.poppins(
-//         fontSize: 18.sp,
-//         fontWeight: FontWeight.w600,
-//         color: AppColors.secondaryWhite,
-//       ),
-//     ),
-//     textTheme: GoogleFonts.poppinsTextTheme(ThemeData.dark().textTheme),
-//     cardTheme: CardTheme(
-//       color: AppColors.secondaryBlack,
-//       elevation: 2,
-//       shape: RoundedRectangleBorder(
-//         borderRadius: BorderRadius.circular(_borderRadius),
-//       ),
-//     ),
-//   );
-// }
 ''');
 
     await File(path.join(configDir.path, 'app_strings.dart')).writeAsString('''
@@ -155,6 +112,21 @@ abstract class AppStrings {
   AppStrings._();
 
   static const welcomeText = 'Welcome to LayerX';
+
+  // Login screen
+  static const loginTitle = 'Welcome back';
+  static const loginSubtitle = 'Sign in to continue to LayerX';
+  static const emailLabel = 'Email';
+  static const passwordLabel = 'Password';
+  static const signIn = 'Sign In';
+  static const loginHint = 'Use any email & password to continue';
+
+  // Home screen
+  static const homeIntro =
+      'LayerX is a production-ready Flutter architecture: a modular MVVM '
+      'structure with GetX navigation and state management, a resilient '
+      'networking layer, reusable services and a polished design system — so '
+      'you can focus on features, not setup.';
 }
 ''');
 
@@ -165,6 +137,8 @@ abstract class AppUrls {
 
   static const String baseAPIURL = 'https://api.example.com/';
 
+  static const String login = 'auth/login';
+  static const String logout = 'auth/logout';
   static const String signup = 'auth/signup';
   static const String updateAccount = 'auth/update';
   static const String appSettings = 'settings';
@@ -222,6 +196,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 
 import '../services/logger_service.dart';
+import 'app_colors.dart';
 
 class Utils {
   static String formatDate(DateTime? date) =>
@@ -259,7 +234,7 @@ class Utils {
     required Widget child,
   }) {
     showModalBottomSheet(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.white,
       isScrollControlled: true,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
@@ -283,7 +258,7 @@ class Utils {
       context: context,
       barrierDismissible: true,
       builder: (_) => Dialog(
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.white,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(22.sp),
         ),
@@ -330,7 +305,9 @@ class Utils {
     await File(path.join(configDir.path, 'config.dart')).writeAsString('''
 /// Defines app configuration for the LayerX app.
 class AppConfig {
-  static const String appName = 'LayerX App';
+  AppConfig._();
+
+  static const String appName = 'LayerX';
 }
 ''');
 

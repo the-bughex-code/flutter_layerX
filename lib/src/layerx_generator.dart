@@ -13,6 +13,8 @@ part 'parts/notifications_part.dart';
 part 'parts/repositories_part.dart';
 part 'parts/app_part.dart';
 part 'parts/https_calls_part.dart';
+part 'parts/custom_widgets_part.dart';
+part 'parts/text_styles_part.dart';
 
 
 class LayerXGenerator {
@@ -35,7 +37,6 @@ class LayerXGenerator {
       }
       if (installDeps) {
         await DependencyInstaller.install(projectPath);
-        stdout.writeln('✅ Added missing LayerX dependencies (no overrides).');
       }
 
       final appDir = Directory(path.join(projectPath, 'lib', 'app'));
@@ -48,15 +49,17 @@ class LayerXGenerator {
         'mvvm/model/api_response_model',
         'mvvm/view/splash',
         'mvvm/view/login',
+        'mvvm/view/home',
         'mvvm/view_model/splash',
         'mvvm/view_model/login',
-        'repository/auth_repo',
-        'repository/firebase',
-        'repository/local_db',
+        'mvvm/view_model/home',
         'repository/apis',
+        'repository/firebase',
+        'repository/localdb',
         'services',
         'services/notifications',
-        'widgets',
+        'custom_widgets',
+        'custom_widgets/dialogs',
       ];
 
       for (final dir in directories) {
@@ -66,13 +69,17 @@ class LayerXGenerator {
       }
 
       await _createConfigFiles(appDir.path);
+      await _createTextStyles(appDir.path);
       await _createMVVMSkeleton(appDir.path);
       await _createModelFiles(appDir.path);
       await _createServiceFiles(appDir.path);
       await _createNotificationFiles(appDir.path);
+      await _createCustomWidgetFiles(appDir.path);
       await _createRepositoryFiles(appDir.path);
       await _createAppWidgetFile(projectPath);
       await _updateMainFile(projectPath);
+      await _createWidgetTest(projectPath);
+      await _ensureAnalysisOptions(projectPath);
 
       stdout.writeln('✅ LayerX structure generated successfully!');
     } catch (e) {

@@ -9,7 +9,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/io_client.dart';
 
@@ -17,7 +16,7 @@ import '../config/app_urls.dart';
 import 'logger_service.dart';
 import 'shared_preferences_service.dart';
 
-enum HttpMethod { GET, POST, PUT, PATCH, DELETE }
+enum HttpMethod { get, post, put, patch, delete }
 
 /// Simple cancellation token for requests.
 class CancelToken {
@@ -95,12 +94,12 @@ class HttpsCalls {
 
   bool _isIdempotent(HttpMethod m) {
     switch (m) {
-      case HttpMethod.GET:
-      case HttpMethod.PUT:
-      case HttpMethod.DELETE:
+      case HttpMethod.get:
+      case HttpMethod.put:
+      case HttpMethod.delete:
         return true;
-      case HttpMethod.POST:
-      case HttpMethod.PATCH:
+      case HttpMethod.post:
+      case HttpMethod.patch:
         return false;
     }
   }
@@ -231,7 +230,7 @@ class HttpsCalls {
 
   Future<Map<String, String>> _getDefaultHeaders() async {
     final token = await SharedPreferencesService().readToken();
-    debugPrint('======>>> Token: $token');
+    LoggerService.d('Auth header attached: ${token != null}');
     return {
       HttpHeaders.contentTypeHeader: 'application/json',
       HttpHeaders.acceptHeader: 'application/json',
@@ -251,24 +250,24 @@ class HttpsCalls {
     LoggerService.d('🌀 Sending $method → $url');
 
     switch (method) {
-      case HttpMethod.GET:
+      case HttpMethod.get:
         return client.get(url, headers: headers);
-      case HttpMethod.POST:
+      case HttpMethod.post:
         return client.post(url, headers: headers, body: body);
-      case HttpMethod.PUT:
+      case HttpMethod.put:
         return client.put(url, headers: headers, body: body);
-      case HttpMethod.PATCH:
+      case HttpMethod.patch:
         return client.patch(url, headers: headers, body: body);
-      case HttpMethod.DELETE:
+      case HttpMethod.delete:
         return client.delete(url, headers: headers, body: body);
     }
   }
 
   Future<http.Response> getApiHits(String endpoint, {CancelToken? cancelToken}) {
     return _performRequest(
-      HttpMethod.GET,
+      HttpMethod.get,
       endpoint,
-      (client) => _sendRequest(client, HttpMethod.GET, endpoint),
+      (client) => _sendRequest(client, HttpMethod.get, endpoint),
       cancelToken: cancelToken,
     );
   }
@@ -276,10 +275,10 @@ class HttpsCalls {
   Future<http.Response> postApiHits(String endpoint, List<int>? utfContent,
       {CancelToken? cancelToken}) {
     return _performRequest(
-      HttpMethod.POST,
+      HttpMethod.post,
       endpoint,
       (client) =>
-          _sendRequest(client, HttpMethod.POST, endpoint, body: utfContent),
+          _sendRequest(client, HttpMethod.post, endpoint, body: utfContent),
       body: utfContent,
       cancelToken: cancelToken,
     );
@@ -288,10 +287,10 @@ class HttpsCalls {
   Future<http.Response> putApiHits(String endpoint, List<int> utfContent,
       {CancelToken? cancelToken}) {
     return _performRequest(
-      HttpMethod.PUT,
+      HttpMethod.put,
       endpoint,
       (client) =>
-          _sendRequest(client, HttpMethod.PUT, endpoint, body: utfContent),
+          _sendRequest(client, HttpMethod.put, endpoint, body: utfContent),
       body: utfContent,
       cancelToken: cancelToken,
     );
@@ -300,10 +299,10 @@ class HttpsCalls {
   Future<http.Response> patchApiHits(String endpoint, List<int> utfContent,
       {CancelToken? cancelToken}) {
     return _performRequest(
-      HttpMethod.PATCH,
+      HttpMethod.patch,
       endpoint,
       (client) =>
-          _sendRequest(client, HttpMethod.PATCH, endpoint, body: utfContent),
+          _sendRequest(client, HttpMethod.patch, endpoint, body: utfContent),
       body: utfContent,
       cancelToken: cancelToken,
     );
@@ -312,10 +311,10 @@ class HttpsCalls {
   Future<http.Response> deleteApiHits(String endpoint,
       {List<int>? utfContent, CancelToken? cancelToken}) {
     return _performRequest(
-      HttpMethod.DELETE,
+      HttpMethod.delete,
       endpoint,
       (client) =>
-          _sendRequest(client, HttpMethod.DELETE, endpoint, body: utfContent),
+          _sendRequest(client, HttpMethod.delete, endpoint, body: utfContent),
       body: utfContent,
       cancelToken: cancelToken,
     );
