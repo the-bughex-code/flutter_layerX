@@ -1,0 +1,18 @@
+# Keep the published archive lean. The example's Dart source (example/lib +
+# example/pubspec.yaml) is kept so it shows on the package page; its generated
+# platform folders and build artifacts are not needed on pub.dev.
+example/android/
+example/ios/
+example/linux/
+example/macos/
+example/windows/
+example/web/
+example/build/
+example/.dart_tool/
+example/.metadata
+example/pubspec.lock
+
+# Repo-only files that don't belong in the package archive.
+.github/
+.idea/
+append_probe.yaml
