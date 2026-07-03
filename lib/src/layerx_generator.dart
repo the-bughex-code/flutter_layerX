@@ -14,6 +14,7 @@ part 'parts/app_part.dart';
 part 'parts/https_calls_part.dart';
 part 'parts/custom_widgets_part.dart';
 part 'parts/text_styles_part.dart';
+part 'parts/native_config_part.dart';
 
 class LayerXGenerator {
   final String projectPath;
@@ -78,6 +79,7 @@ class LayerXGenerator {
       await _updateMainFile(projectPath);
       await _createWidgetTest(projectPath);
       await _ensureAnalysisOptions(projectPath);
+      await _patchNativeConfig(projectPath);
       await _formatGeneratedCode(projectPath);
 
       stdout.writeln('✅ LayerX structure generated successfully!');

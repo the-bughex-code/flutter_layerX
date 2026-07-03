@@ -142,5 +142,57 @@ linter:
       // The pre-existing linter section must survive untouched.
       expect((doc['linter'] as YamlMap)['rules'], isNotNull);
     });
+
+    test('patches native config (Android + iOS) idempotently', () async {
+      final manifest = File(
+        '${tempDir.path}/android/app/src/main/AndroidManifest.xml',
+      );
+      await manifest.create(recursive: true);
+      await manifest.writeAsString('''
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <application android:label="test">
+    </application>
+</manifest>
+''');
+
+      final plist = File('${tempDir.path}/ios/Runner/Info.plist');
+      await plist.create(recursive: true);
+      await plist.writeAsString('''
+<?xml version="1.0" encoding="UTF-8"?>
+<plist version="1.0">
+<dict>
+\t<key>CFBundleName</key>
+\t<string>test</string>
+</dict>
+</plist>
+''');
+
+      await LayerXGenerator(tempDir.path, installDeps: false).generate();
+
+      final m1 = manifest.readAsStringSync();
+      expect(m1.contains('android.permission.POST_NOTIFICATIONS'), true);
+      expect(m1.contains('android.permission.ACCESS_FINE_LOCATION'), true);
+      expect(
+        plist.readAsStringSync().contains(
+          'NSLocationWhenInUseUsageDescription',
+        ),
+        true,
+      );
+
+      // Running again must not duplicate anything.
+      await LayerXGenerator(tempDir.path, installDeps: false).generate();
+      expect(
+        'android.permission.INTERNET'
+            .allMatches(manifest.readAsStringSync())
+            .length,
+        1,
+      );
+      expect(
+        'NSLocationWhenInUseUsageDescription'
+            .allMatches(plist.readAsStringSync())
+            .length,
+        1,
+      );
+    });
   });
 }

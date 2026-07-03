@@ -30,6 +30,10 @@ warnings, out of the box.
   controllers and `LoginRequestModel` / `LoginResponseModel`.
 - **Modern logger console** — colored, emoji-tagged output with
   request/response/JSON/divider helpers and execution timing.
+- **Native permission patching** — `layerx enable` injects only the Android
+  (`AndroidManifest.xml`) and iOS (`Info.plist`) entries the generated
+  notification/location features actually use, each justified inline and safe
+  to prune. Idempotent.
 
 ### Changed
 - Routing now declares bindings inline via `BindingsBuilder` — no separate

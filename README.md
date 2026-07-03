@@ -325,7 +325,7 @@ Yes — <code>dart run layerx_generator --path .</code> works identically.
 |---|---|
 | `flutter: command not found` during enable | Ensure Flutter is on your `PATH`; LayerX falls back to writing `pubspec.yaml` so you can `flutter pub get` manually |
 | Google Fonts not showing in tests | `GoogleFonts.config.allowRuntimeFetching = false;` in `setUpAll` |
-| Notifications need setup | Uncomment `Firebase.initializeApp()` + `NotificationService.initialize()` in `main.dart` and add the native permissions |
+| Notifications need setup | Native permissions are auto-added; just uncomment `Firebase.initializeApp()` + `NotificationService.initialize()` in `main.dart` and add your Firebase config files |
 
 ---
 
@@ -343,10 +343,14 @@ flutter test        # All tests passed!
 
 ## ◆ Roadmap
 
+- [x] Native permission patcher (Android manifest + iOS Info.plist)
 - [ ] `--with-notifications` opt-in flag for the Firebase/location stack
-- [ ] Native permission patcher (Android manifest + iOS Info.plist)
 - [ ] Optional theme presets
 - [ ] `layerx add screen <name>` sub-generator
+
+> **Notifications on Firebase** still need your own `google-services.json`
+> (Android) and `GoogleService-Info.plist` (iOS) plus `Firebase.initializeApp()`
+> — that config is project-specific and can't be scaffolded.
 
 ---
 
