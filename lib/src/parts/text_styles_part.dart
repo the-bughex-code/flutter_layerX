@@ -1,13 +1,11 @@
 part of 'package:layerx_generator/src/layerx_generator.dart';
 
-
 extension _TextStylesPart on LayerXGenerator {
   Future<void> _createTextStyles(String appDirPath) async {
     final configDir = Directory(path.join(appDirPath, 'config'));
 
-    await File(
-      path.join(configDir.path, 'app_text_styles.dart'),
-    ).writeAsString('''
+    await File(path.join(configDir.path, 'app_text_styles.dart')).writeAsString(
+      '''
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -96,7 +94,8 @@ abstract class AppTextStyles {
         color: AppColors.textLightBlack,
       );
 }
-''');
+''',
+    );
 
     stdout.writeln('Created app_text_styles.dart');
   }

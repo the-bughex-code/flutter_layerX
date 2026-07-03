@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:layerx_generator/src/parts/dependency_installer_part.dart';
 import 'package:path/path.dart' as path;
 
-
 part 'parts/config_part.dart';
 part 'parts/mvvm_part.dart';
 part 'parts/models_part.dart';
@@ -15,7 +14,6 @@ part 'parts/app_part.dart';
 part 'parts/https_calls_part.dart';
 part 'parts/custom_widgets_part.dart';
 part 'parts/text_styles_part.dart';
-
 
 class LayerXGenerator {
   final String projectPath;
@@ -80,6 +78,7 @@ class LayerXGenerator {
       await _updateMainFile(projectPath);
       await _createWidgetTest(projectPath);
       await _ensureAnalysisOptions(projectPath);
+      await _formatGeneratedCode(projectPath);
 
       stdout.writeln('✅ LayerX structure generated successfully!');
     } catch (e) {

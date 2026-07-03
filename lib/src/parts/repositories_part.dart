@@ -1,6 +1,5 @@
 part of 'package:layerx_generator/src/layerx_generator.dart';
 
-
 extension _RepositoriesPart on LayerXGenerator {
   Future<void> _createRepositoryFiles(String appDirPath) async {
     final repoDir = Directory(path.join(appDirPath, 'repository'));
@@ -14,15 +13,14 @@ extension _RepositoriesPart on LayerXGenerator {
     for (final sub in ['firebase', 'localdb']) {
       final dir = Directory(path.join(repoDir.path, sub));
       await dir.create(recursive: true);
-      await File(path.join(dir.path, '.gitkeep')).writeAsString(
-        '# Placeholder — add your $sub data sources here.\n',
-      );
+      await File(
+        path.join(dir.path, '.gitkeep'),
+      ).writeAsString('# Placeholder — add your $sub data sources here.\n');
     }
 
     // Top-level auth repository (repository/auth_repository.dart).
-    await File(
-      path.join(repoDir.path, 'auth_repository.dart'),
-    ).writeAsString(r'''
+    await File(path.join(repoDir.path, 'auth_repository.dart')).writeAsString(
+      r'''
 import 'dart:convert';
 
 import '../config/app_urls.dart';
@@ -74,7 +72,8 @@ class AuthRepository {
     return ApiResponse<void>(success: response.statusCode == 200);
   }
 }
-''');
+''',
+    );
 
     // API repositories live under repository/apis/.
     await File(

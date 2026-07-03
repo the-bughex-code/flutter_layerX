@@ -26,12 +26,38 @@ class LoginView extends GetView<LoginController> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: 24.h),
+                Container(
+                  width: 56.r,
+                  height: 56.r,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                      colors: [AppColors.primary, AppColors.primaryLight],
+                    ),
+                    borderRadius: BorderRadius.circular(18.r),
+                    boxShadow: [
+                      BoxShadow(
+                        color: AppColors.primary.withValues(alpha: 0.3),
+                        blurRadius: 20,
+                        offset: const Offset(0, 10),
+                      ),
+                    ],
+                  ),
+                  child: Text(
+                    'LX',
+                    style: AppTextStyles.subtitle.copyWith(
+                      color: AppColors.white,
+                    ),
+                  ),
+                ),
+                SizedBox(height: 24.h),
                 Text(AppStrings.loginTitle, style: AppTextStyles.displayLarge),
                 SizedBox(height: 8.h),
                 Text(
                   AppStrings.loginSubtitle,
-                  style: AppTextStyles.bodyMedium
-                      .copyWith(color: AppColors.textLightBlack),
+                  style: AppTextStyles.bodyMedium.copyWith(
+                    color: AppColors.textLightBlack,
+                  ),
                 ),
                 SizedBox(height: 36.h),
                 AppTextField(

@@ -28,9 +28,17 @@ class NoInternetDialog {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(Icons.wifi_off_rounded, size: 44.r, color: AppColors.primary),
+              Icon(
+                Icons.wifi_off_rounded,
+                size: 44.r,
+                color: AppColors.primary,
+              ),
               SizedBox(height: 16.h),
-              Text(title, textAlign: TextAlign.center, style: AppTextStyles.title),
+              Text(
+                title,
+                textAlign: TextAlign.center,
+                style: AppTextStyles.title,
+              ),
               SizedBox(height: 8.h),
               Text(
                 message,

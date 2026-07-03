@@ -13,7 +13,7 @@ import '../services/https_calls.dart';
 /// is injected so it can be swapped for a fake in tests.
 class AuthRepository {
   AuthRepository({HttpsCalls? httpsCalls})
-      : _httpsCalls = httpsCalls ?? HttpsCalls();
+    : _httpsCalls = httpsCalls ?? HttpsCalls();
 
   final HttpsCalls _httpsCalls;
 
@@ -44,8 +44,10 @@ class AuthRepository {
 
   /// Invalidates the current session on the backend.
   Future<ApiResponse<void>> logout() async {
-    final response =
-        await _httpsCalls.postApiHits(AppUrls.logout, utf8.encode('{}'));
+    final response = await _httpsCalls.postApiHits(
+      AppUrls.logout,
+      utf8.encode('{}'),
+    );
     return ApiResponse<void>(success: response.statusCode == 200);
   }
 }

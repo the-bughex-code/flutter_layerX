@@ -13,7 +13,7 @@ class NotificationService {
       FirebaseMessaging.instance;
 
   static final FlutterLocalNotificationsPlugin
-      _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+  _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
   static bool _isInitialized = false;
 
@@ -31,8 +31,9 @@ class NotificationService {
     const AndroidInitializationSettings androidInitSettings =
         AndroidInitializationSettings('@mipmap/ic_launcher');
 
-    const InitializationSettings initSettings =
-        InitializationSettings(android: androidInitSettings);
+    const InitializationSettings initSettings = InitializationSettings(
+      android: androidInitSettings,
+    );
 
     await _flutterLocalNotificationsPlugin.initialize(
       initSettings,
@@ -64,7 +65,8 @@ class NotificationService {
   /// Background handler MUST be top-level in real apps.
   /// This is kept here because generator writes files only.
   static Future<void> firebaseMessagingBackgroundHandler(
-      RemoteMessage message) async {
+    RemoteMessage message,
+  ) async {
     log("📩 Background Message: ${message.notification?.title}");
   }
 
@@ -72,16 +74,17 @@ class NotificationService {
   static Future<void> showNotification(RemoteMessage message) async {
     const AndroidNotificationDetails androidDetails =
         AndroidNotificationDetails(
-      'layerx_channel',
-      'LayerX Notifications',
-      channelDescription: 'LayerX push notifications channel',
-      importance: Importance.high,
-      priority: Priority.high,
-      playSound: true,
-    );
+          'layerx_channel',
+          'LayerX Notifications',
+          channelDescription: 'LayerX push notifications channel',
+          importance: Importance.high,
+          priority: Priority.high,
+          playSound: true,
+        );
 
-    const NotificationDetails notificationDetails =
-        NotificationDetails(android: androidDetails);
+    const NotificationDetails notificationDetails = NotificationDetails(
+      android: androidDetails,
+    );
 
     await _flutterLocalNotificationsPlugin.show(
       message.hashCode,

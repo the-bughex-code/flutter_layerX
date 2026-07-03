@@ -1,6 +1,5 @@
 part of 'package:layerx_generator/src/layerx_generator.dart';
 
-
 extension _ServicesPart on LayerXGenerator {
   Future<void> _createServiceFiles(String appDirPath) async {
     final servicesDir = Directory(path.join(appDirPath, 'services'));
@@ -111,6 +110,26 @@ class LoggerService {
     _logger.i(title.isEmpty
         ? '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
         : '━━━━━ $title ━━━━━');
+  }
+
+  /// A boot banner — call once from `main()` to announce the app in the console.
+  static void banner({String name = 'LayerX', String? version, String? env}) {
+    if (!kDebugMode) return;
+    final tags = <String>[
+      if (version != null) 'v$version',
+      if (env != null) env.toUpperCase(),
+    ];
+    final subtitle = tags.isEmpty ? '' : '  •  ${tags.join('  •  ')}';
+    _logger.i(
+      '🚀  $name$subtitle\n'
+      '✨  Clean architecture · GetX · zero boilerplate\n'
+      '🟢  Console ready — happy shipping!',
+    );
+  }
+
+  /// A warning line with a lightbulb — great for actionable hints.
+  static void hint(dynamic message) {
+    if (kDebugMode) _logger.w('💡 $message');
   }
 
   /// Pretty-prints any JSON-encodable value.

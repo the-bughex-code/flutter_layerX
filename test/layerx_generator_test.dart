@@ -92,10 +92,13 @@ dependencies:
       final generator = LayerXGenerator(tempDir.path, installDeps: false);
       await generator.generate();
 
-      final widgetTest =
-          File('${tempDir.path}/test/widget_test.dart').readAsStringSync();
-      expect(widgetTest.contains('package:test_project/app/app_widget.dart'),
-          true);
+      final widgetTest = File(
+        '${tempDir.path}/test/widget_test.dart',
+      ).readAsStringSync();
+      expect(
+        widgetTest.contains('package:test_project/app/app_widget.dart'),
+        true,
+      );
       expect(widgetTest.contains('MyApp'), false);
     });
 
@@ -103,8 +106,9 @@ dependencies:
       final generator = LayerXGenerator(tempDir.path, installDeps: false);
       await generator.generate();
 
-      final options =
-          File('${tempDir.path}/analysis_options.yaml').readAsStringSync();
+      final options = File(
+        '${tempDir.path}/analysis_options.yaml',
+      ).readAsStringSync();
       expect(options.contains('build/**'), true);
     });
 
@@ -125,8 +129,9 @@ linter:
       final generator = LayerXGenerator(tempDir.path, installDeps: false);
       await generator.generate();
 
-      final raw =
-          File('${tempDir.path}/analysis_options.yaml').readAsStringSync();
+      final raw = File(
+        '${tempDir.path}/analysis_options.yaml',
+      ).readAsStringSync();
       expect(raw.contains('build/**'), true);
 
       // The result must remain valid YAML with both excludes intact.

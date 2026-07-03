@@ -62,8 +62,7 @@ abstract class AppTextStyles {
       _style(size: 24, weight: FontWeight.w700, height: 1.25);
   static TextStyle get title =>
       _style(size: 20, weight: FontWeight.w600, height: 1.3);
-  static TextStyle get subtitle =>
-      _style(size: 16, weight: FontWeight.w600);
+  static TextStyle get subtitle => _style(size: 16, weight: FontWeight.w600);
 
   // Body
   static TextStyle get bodyLarge =>
@@ -71,18 +70,18 @@ abstract class AppTextStyles {
   static TextStyle get bodyMedium =>
       _style(size: 14, weight: FontWeight.w400, height: 1.4);
   static TextStyle get bodySmall => _style(
-        size: 12,
-        weight: FontWeight.w400,
-        color: AppColors.textLightBlack,
-      );
+    size: 12,
+    weight: FontWeight.w400,
+    color: AppColors.textLightBlack,
+  );
 
   // Utility
   static TextStyle get button =>
       _style(size: 16, weight: FontWeight.w600, color: AppColors.white);
   static TextStyle get label => _style(size: 14, weight: FontWeight.w500);
   static TextStyle get caption => _style(
-        size: 11,
-        weight: FontWeight.w400,
-        color: AppColors.textLightBlack,
-      );
+    size: 11,
+    weight: FontWeight.w400,
+    color: AppColors.textLightBlack,
+  );
 }

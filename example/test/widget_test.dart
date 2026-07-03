@@ -9,8 +9,7 @@ void main() {
   // Avoid network font fetches during tests.
   setUpAll(() => GoogleFonts.config.allowRuntimeFetching = false);
 
-  testWidgets('LayerXApp boots to splash then routes to login',
-      (tester) async {
+  testWidgets('LayerXApp boots to splash then routes to login', (tester) async {
     await tester.pumpWidget(const LayerXApp());
     await tester.pump();
     expect(find.byType(SplashView), findsOneWidget);

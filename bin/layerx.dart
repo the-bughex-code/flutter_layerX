@@ -13,9 +13,10 @@ import 'package:layerx_generator/layerx_generator.dart';
 /// The legacy `dart run layerx_generator --path .` entry point is still
 /// supported for backward compatibility (see `bin/layerx_generator.dart`).
 Future<void> main(List<String> arguments) async {
-  final runner =
-      CommandRunner<void>('layerx', 'Bootstrap the LayerX architecture.')
-        ..addCommand(EnableCommand());
+  final runner = CommandRunner<void>(
+    'layerx',
+    'Bootstrap the LayerX architecture.',
+  )..addCommand(EnableCommand());
 
   try {
     await runner.run(arguments);

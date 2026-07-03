@@ -21,7 +21,12 @@ class FadeSlideIn extends StatelessWidget {
     return child
         .animate(delay: delay)
         .fadeIn(duration: duration, curve: Curves.easeOut)
-        .moveY(begin: offset, end: 0, duration: duration, curve: Curves.easeOutCubic);
+        .moveY(
+          begin: offset,
+          end: 0,
+          duration: duration,
+          curve: Curves.easeOutCubic,
+        );
   }
 }
 
@@ -100,7 +105,12 @@ class FloatingEffect extends StatelessWidget {
   Widget build(BuildContext context) {
     return child
         .animate(onPlay: (controller) => controller.repeat(reverse: true))
-        .moveY(begin: 0, end: offset, duration: duration, curve: Curves.easeInOut);
+        .moveY(
+          begin: 0,
+          end: offset,
+          duration: duration,
+          curve: Curves.easeInOut,
+        );
   }
 }
 

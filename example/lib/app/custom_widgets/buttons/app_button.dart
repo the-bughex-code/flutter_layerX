@@ -56,8 +56,9 @@ class _AppButtonState extends State<AppButton> {
   Widget build(BuildContext context) {
     final radius = BorderRadius.circular(widget.borderRadius ?? 14.r);
     final textColor = widget.textColor ?? AppColors.white;
-    final background =
-        widget.gradient == null ? (widget.color ?? AppColors.primary) : null;
+    final background = widget.gradient == null
+        ? (widget.color ?? AppColors.primary)
+        : null;
 
     return AnimatedScale(
       scale: _pressed ? 0.97 : 1.0,
@@ -76,8 +77,9 @@ class _AppButtonState extends State<AppButton> {
             child: InkWell(
               borderRadius: radius,
               onTap: _enabled ? _handleTap : null,
-              onHighlightChanged:
-                  _enabled ? (v) => setState(() => _pressed = v) : null,
+              onHighlightChanged: _enabled
+                  ? (v) => setState(() => _pressed = v)
+                  : null,
               child: Container(
                 height: widget.height ?? 52.h,
                 width: widget.width,
@@ -103,14 +105,18 @@ class _AppButtonState extends State<AppButton> {
                             child: Text(
                               widget.label,
                               overflow: TextOverflow.ellipsis,
-                              style: AppTextStyles.button
-                                  .copyWith(color: textColor),
+                              style: AppTextStyles.button.copyWith(
+                                color: textColor,
+                              ),
                             ),
                           ),
                           if (widget.suffixIcon != null) ...[
                             SizedBox(width: 8.w),
-                            Icon(widget.suffixIcon,
-                                color: textColor, size: 20.r),
+                            Icon(
+                              widget.suffixIcon,
+                              color: textColor,
+                              size: 20.r,
+                            ),
                           ],
                         ],
                       ),

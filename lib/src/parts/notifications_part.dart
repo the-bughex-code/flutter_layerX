@@ -1,6 +1,5 @@
 part of 'package:layerx_generator/src/layerx_generator.dart';
 
-
 extension _NotificationsPart on LayerXGenerator {
   Future<void> _createNotificationFiles(String appDirPath) async {
     final notifDir = Directory(
@@ -22,7 +21,6 @@ extension _NotificationsPart on LayerXGenerator {
 
     stdout.writeln('✅ Created notification files in services/notifications/');
   }
-
 
   String _notificationPermissionsContent() => r'''
 import 'dart:developer';

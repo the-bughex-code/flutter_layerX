@@ -1,11 +1,16 @@
 part of 'package:layerx_generator/src/layerx_generator.dart';
 
-
 extension _MvvmPart on LayerXGenerator {
   Future<void> _createMVVMSkeleton(String appDirPath) async {
     // ================= SPLASH =================
     await File(
-      path.join(appDirPath, 'mvvm', 'view_model', 'splash', 'splash_controller.dart'),
+      path.join(
+        appDirPath,
+        'mvvm',
+        'view_model',
+        'splash',
+        'splash_controller.dart',
+      ),
     ).writeAsString(r'''
 import 'package:get/get.dart';
 
@@ -44,45 +49,62 @@ class SplashView extends GetView<SplashController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.primary,
-      body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            FloatingEffect(
-              child: SpringIn(
-                child: Container(
-                  width: 96.r,
-                  height: 96.r,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    color: AppColors.white,
-                    borderRadius: BorderRadius.circular(28.r),
-                    boxShadow: [
-                      BoxShadow(
-                        color: AppColors.black.withValues(alpha: 0.2),
-                        blurRadius: 24,
-                        offset: const Offset(0, 12),
-                      ),
-                    ],
-                  ),
-                  child: Text(
-                    'LX',
-                    style: AppTextStyles.displayLarge
-                        .copyWith(color: AppColors.primary),
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [AppColors.primary, AppColors.primaryLight],
+          ),
+        ),
+        child: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              FloatingEffect(
+                child: SpringIn(
+                  child: Container(
+                    width: 104.r,
+                    height: 104.r,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: AppColors.white,
+                      borderRadius: BorderRadius.circular(30.r),
+                      boxShadow: [
+                        BoxShadow(
+                          color: AppColors.black.withValues(alpha: 0.25),
+                          blurRadius: 40,
+                          offset: const Offset(0, 18),
+                        ),
+                      ],
+                    ),
+                    child: Text(
+                      'LX',
+                      style: AppTextStyles.displayLarge
+                          .copyWith(color: AppColors.primary),
+                    ),
                   ),
                 ),
               ),
-            ),
-            SizedBox(height: 24.h),
-            FadeSlideIn(
-              delay: const Duration(milliseconds: 250),
-              child: Text(
-                AppStrings.welcomeText,
-                style: AppTextStyles.title.copyWith(color: AppColors.white),
+              SizedBox(height: 28.h),
+              FadeSlideIn(
+                delay: const Duration(milliseconds: 250),
+                child: Text(
+                  AppStrings.welcomeText,
+                  style: AppTextStyles.title.copyWith(color: AppColors.white),
+                ),
               ),
-            ),
-          ],
+              SizedBox(height: 8.h),
+              FadeSlideIn(
+                delay: const Duration(milliseconds: 400),
+                child: Text(
+                  'Clean architecture, ready to ship',
+                  style: AppTextStyles.bodySmall
+                      .copyWith(color: AppColors.white.withValues(alpha: 0.85)),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -92,7 +114,13 @@ class SplashView extends GetView<SplashController> {
 
     // ================= LOGIN =================
     await File(
-      path.join(appDirPath, 'mvvm', 'view_model', 'login', 'login_controller.dart'),
+      path.join(
+        appDirPath,
+        'mvvm',
+        'view_model',
+        'login',
+        'login_controller.dart',
+      ),
     ).writeAsString(r'''
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -195,6 +223,30 @@ class LoginView extends GetView<LoginController> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: 24.h),
+                Container(
+                  width: 56.r,
+                  height: 56.r,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                      colors: [AppColors.primary, AppColors.primaryLight],
+                    ),
+                    borderRadius: BorderRadius.circular(18.r),
+                    boxShadow: [
+                      BoxShadow(
+                        color: AppColors.primary.withValues(alpha: 0.3),
+                        blurRadius: 20,
+                        offset: const Offset(0, 10),
+                      ),
+                    ],
+                  ),
+                  child: Text(
+                    'LX',
+                    style:
+                        AppTextStyles.subtitle.copyWith(color: AppColors.white),
+                  ),
+                ),
+                SizedBox(height: 24.h),
                 Text(AppStrings.loginTitle, style: AppTextStyles.displayLarge),
                 SizedBox(height: 8.h),
                 Text(
@@ -265,7 +317,13 @@ class LoginView extends GetView<LoginController> {
 
     // ================= HOME =================
     await File(
-      path.join(appDirPath, 'mvvm', 'view_model', 'home', 'home_controller.dart'),
+      path.join(
+        appDirPath,
+        'mvvm',
+        'view_model',
+        'home',
+        'home_controller.dart',
+      ),
     ).writeAsString(r'''
 import 'package:get/get.dart';
 
@@ -393,7 +451,21 @@ class _HighlightCard extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(icon, style: AppTextStyles.headline),
+          Container(
+            width: 44.r,
+            height: 44.r,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  AppColors.primary.withValues(alpha: 0.12),
+                  AppColors.primaryLight.withValues(alpha: 0.12),
+                ],
+              ),
+              borderRadius: BorderRadius.circular(12.r),
+            ),
+            child: Text(icon, style: AppTextStyles.subtitle),
+          ),
           SizedBox(width: 14.w),
           Expanded(
             child: Column(

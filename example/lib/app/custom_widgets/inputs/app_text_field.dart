@@ -92,8 +92,9 @@ class _AppTextFieldState extends State<AppTextField> {
                 if (widget.isRequired)
                   TextSpan(
                     text: ' *',
-                    style: AppTextStyles.label
-                        .copyWith(color: AppColors.negativeRed),
+                    style: AppTextStyles.label.copyWith(
+                      color: AppColors.negativeRed,
+                    ),
                   ),
               ],
             ),
@@ -129,22 +130,26 @@ class _AppTextFieldState extends State<AppTextField> {
             style: AppTextStyles.bodyMedium,
             decoration: InputDecoration(
               hintText: widget.hint,
-              hintStyle: AppTextStyles.bodyMedium
-                  .copyWith(color: AppColors.textLightBlack),
+              hintStyle: AppTextStyles.bodyMedium.copyWith(
+                color: AppColors.textLightBlack,
+              ),
               prefixIcon: widget.prefixIcon,
               suffixIcon: widget.suffixIcon,
               filled: true,
               fillColor: widget.readOnly ? AppColors.bgColor : AppColors.white,
               counterText: '',
-              contentPadding:
-                  EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+              contentPadding: EdgeInsets.symmetric(
+                horizontal: 16.w,
+                vertical: 16.h,
+              ),
               border: _border(AppColors.borderColor),
               enabledBorder: _border(AppColors.borderColor),
               focusedBorder: _border(AppColors.primary, width: 1.5),
               errorBorder: _border(AppColors.negativeRed),
               focusedErrorBorder: _border(AppColors.negativeRed, width: 1.5),
-              errorStyle:
-                  AppTextStyles.caption.copyWith(color: AppColors.negativeRed),
+              errorStyle: AppTextStyles.caption.copyWith(
+                color: AppColors.negativeRed,
+              ),
             ),
           ),
         ),

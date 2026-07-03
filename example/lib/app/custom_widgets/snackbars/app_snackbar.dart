@@ -69,12 +69,16 @@ class _AppSnackbars {
     switch (type) {
       case _SnackType.success:
         return const _SnackConfig(
-            Icons.check_circle_rounded, AppColors.positiveGreen);
+          Icons.check_circle_rounded,
+          AppColors.positiveGreen,
+        );
       case _SnackType.error:
         return const _SnackConfig(Icons.error_rounded, AppColors.negativeRed);
       case _SnackType.warning:
         return const _SnackConfig(
-            Icons.warning_amber_rounded, AppColors.warning);
+          Icons.warning_amber_rounded,
+          AppColors.warning,
+        );
       case _SnackType.info:
         return const _SnackConfig(Icons.info_rounded, AppColors.primary);
     }

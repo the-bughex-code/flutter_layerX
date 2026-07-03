@@ -26,7 +26,8 @@ class NotificationPermissions {
       log('✅ FCM Token: $token');
 
       Get.snackbar("Notification", "Permission granted");
-    } else if (settings.authorizationStatus == AuthorizationStatus.provisional) {
+    } else if (settings.authorizationStatus ==
+        AuthorizationStatus.provisional) {
       log('🟡 User granted provisional permission');
       Get.snackbar("Notification", "Provisional permission granted");
     } else {

@@ -92,8 +92,11 @@ class ApiResponseHandler {
           errorResponse['message'] ?? 'Something went wrong. Please try again.';
       return ApiResponse<T>(message: message);
     } catch (e, stack) {
-      LoggerService.e('❌ Error parsing error response',
-          error: e, stackTrace: stack);
+      LoggerService.e(
+        '❌ Error parsing error response',
+        error: e,
+        stackTrace: stack,
+      );
       return ApiResponse<T>(message: errorMessage);
     }
   }

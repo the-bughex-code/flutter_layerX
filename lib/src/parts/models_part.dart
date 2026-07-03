@@ -1,6 +1,5 @@
 part of 'package:layerx_generator/src/layerx_generator.dart';
 
-
 extension _ModelsPart on LayerXGenerator {
   Future<void> _createModelFiles(String appDirPath) async {
     final bodyModelDir = Directory(

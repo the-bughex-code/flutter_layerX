@@ -68,10 +68,11 @@ class DependencyInstaller {
       return;
     }
 
-    final addExit = await _runFlutter(
-      projectPath,
-      ['pub', 'add', ...missing.map((e) => '${e.key}:${e.value}')],
-    );
+    final addExit = await _runFlutter(projectPath, [
+      'pub',
+      'add',
+      ...missing.map((e) => '${e.key}:${e.value}'),
+    ]);
 
     if (addExit == 0) {
       stdout.writeln(
@@ -116,10 +117,7 @@ class DependencyInstaller {
   /// Runs `flutter <args>` in [projectPath]. Returns the process exit code, or
   /// `null` if the Flutter executable could not be launched at all — which lets
   /// callers distinguish "Flutter missing" from "Flutter ran but failed".
-  static Future<int?> _runFlutter(
-    String projectPath,
-    List<String> args,
-  ) async {
+  static Future<int?> _runFlutter(String projectPath, List<String> args) async {
     final executable = Platform.isWindows ? 'flutter.bat' : 'flutter';
     try {
       final result = await Process.run(

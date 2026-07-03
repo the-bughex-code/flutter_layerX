@@ -1,6 +1,5 @@
 part of 'package:layerx_generator/src/layerx_generator.dart';
 
-
 extension _AppPart on LayerXGenerator {
   Future<void> _createAppWidgetFile(String projectPath) async {
     final appDir = Directory(path.join(projectPath, 'lib', 'app'));
@@ -56,9 +55,13 @@ class LayerXApp extends StatelessWidget {
 import 'package:flutter/material.dart';
 
 import 'app/app_widget.dart';
+import 'app/config/config.dart';
+import 'app/services/logger_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  LoggerService.banner(name: AppConfig.appName, env: 'debug');
 
   // ✅ Uncomment when Firebase / Notifications are enabled:
   // await Firebase.initializeApp();
@@ -162,7 +165,9 @@ analyzer:
     var blockEnd = lines.length;
     for (var i = analyzerIdx + 1; i < lines.length; i++) {
       final line = lines[i];
-      if (line.trim().isNotEmpty && !line.startsWith(' ') && !line.startsWith('\t')) {
+      if (line.trim().isNotEmpty &&
+          !line.startsWith(' ') &&
+          !line.startsWith('\t')) {
         blockEnd = i;
         break;
       }
@@ -190,6 +195,33 @@ analyzer:
 
     await file.writeAsString(lines.join('\n'));
     stdout.writeln('Updated analysis_options.yaml (excluded build/).');
+  }
+
+  /// Runs `dart format` over the generated code so a freshly enabled project is
+  /// formatting-clean out of the box (and scores full marks on `dart format`).
+  ///
+  /// Only our own generated targets are formatted — never the user's other
+  /// files. Non-fatal: if the Dart SDK can't be launched the code is still
+  /// valid, just not reformatted.
+  Future<void> _formatGeneratedCode(String projectPath) async {
+    final targets = [
+      path.join('lib', 'app'),
+      path.join('lib', 'main.dart'),
+      path.join('test', 'widget_test.dart'),
+    ];
+    try {
+      final result = await Process.run(
+        'dart',
+        ['format', ...targets],
+        workingDirectory: projectPath,
+        runInShell: Platform.isWindows,
+      );
+      if (result.exitCode == 0) {
+        stdout.writeln('Formatted generated code.');
+      }
+    } on ProcessException {
+      // Dart SDK not on PATH — skip formatting; the code is still valid.
+    }
   }
 
   /// Reads the `name:` field from the project's pubspec without a YAML

@@ -1,6 +1,5 @@
 part of 'package:layerx_generator/src/layerx_generator.dart';
 
-
 extension _HttpsCallsPart on LayerXGenerator {
   String _httpsCallsContent() => r'''
 import 'dart:async';

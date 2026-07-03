@@ -1,11 +1,16 @@
 part of 'package:layerx_generator/src/layerx_generator.dart';
 
-
 extension _CustomWidgetsPart on LayerXGenerator {
   Future<void> _createCustomWidgetFiles(String appDirPath) async {
     final root = Directory(path.join(appDirPath, 'custom_widgets'));
 
-    for (final sub in ['dialogs', 'buttons', 'inputs', 'snackbars', 'animations']) {
+    for (final sub in [
+      'dialogs',
+      'buttons',
+      'inputs',
+      'snackbars',
+      'animations',
+    ]) {
       await Directory(path.join(root.path, sub)).create(recursive: true);
     }
 

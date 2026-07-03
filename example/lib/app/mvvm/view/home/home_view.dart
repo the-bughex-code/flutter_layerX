@@ -41,8 +41,9 @@ class HomeView extends GetView<HomeController> {
               SizedBox(height: 12.h),
               Text(
                 controller.intro,
-                style: AppTextStyles.bodyLarge
-                    .copyWith(color: AppColors.textLightBlack),
+                style: AppTextStyles.bodyLarge.copyWith(
+                  color: AppColors.textLightBlack,
+                ),
               ),
               SizedBox(height: 32.h),
               for (final h in controller.highlights)
@@ -92,7 +93,21 @@ class _HighlightCard extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(icon, style: AppTextStyles.headline),
+          Container(
+            width: 44.r,
+            height: 44.r,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  AppColors.primary.withValues(alpha: 0.12),
+                  AppColors.primaryLight.withValues(alpha: 0.12),
+                ],
+              ),
+              borderRadius: BorderRadius.circular(12.r),
+            ),
+            child: Text(icon, style: AppTextStyles.subtitle),
+          ),
           SizedBox(width: 14.w),
           Expanded(
             child: Column(

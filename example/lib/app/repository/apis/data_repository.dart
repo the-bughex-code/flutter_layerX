@@ -4,7 +4,7 @@ import '../../services/https_calls.dart';
 /// Repository for general data/API calls.
 class DataRepository {
   DataRepository({HttpsCalls? httpsCalls})
-      : _httpsCalls = httpsCalls ?? HttpsCalls();
+    : _httpsCalls = httpsCalls ?? HttpsCalls();
 
   final HttpsCalls _httpsCalls;
 

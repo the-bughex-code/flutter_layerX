@@ -51,10 +51,7 @@ class Utils {
         ),
       ),
       context: context,
-      builder: (_) => SizedBox(
-        width: ScreenUtil().screenWidth,
-        child: child,
-      ),
+      builder: (_) => SizedBox(width: ScreenUtil().screenWidth, child: child),
     );
   }
 

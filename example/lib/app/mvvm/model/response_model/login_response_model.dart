@@ -11,8 +11,5 @@ class LoginResponseModel {
         name: json['name'] as String?,
       );
 
-  Map<String, dynamic> toJson() => {
-        'token': token,
-        'name': name,
-      };
+  Map<String, dynamic> toJson() => {'token': token, 'name': name};
 }

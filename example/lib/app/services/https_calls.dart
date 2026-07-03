@@ -148,7 +148,8 @@ class HttpsCalls {
       for (int attempt = 0; attempt < maxAttempts; attempt++) {
         if (token?.isCanceled == true) {
           LoggerService.w(
-              '⛔️ Request cancelled before send: $key, reason: ${token?.reason}');
+            '⛔️ Request cancelled before send: $key, reason: ${token?.reason}',
+          );
           perRequestClient?.close();
           throw Exception('Request cancelled: ${token?.reason ?? ""}');
         }
@@ -164,7 +165,9 @@ class HttpsCalls {
             _ongoingRequests[key] = Future.any([
               future,
               token.whenCanceled.then(
-                  (_) => throw Exception('Request cancelled: ${token.reason ?? ""}')),
+                (_) =>
+                    throw Exception('Request cancelled: ${token.reason ?? ""}'),
+              ),
             ]);
             response = await _ongoingRequests[key]!;
           }
@@ -195,9 +198,10 @@ class HttpsCalls {
 
           if (attempt == maxAttempts - 1) {
             LoggerService.e(
-                '💥 $method $endpoint failed after $maxAttempts attempts: $e',
-                error: e,
-                stackTrace: st);
+              '💥 $method $endpoint failed after $maxAttempts attempts: $e',
+              error: e,
+              stackTrace: st,
+            );
             _ongoingRequests.remove(key);
             perRequestClient?.close();
             throw Exception('Failed after $maxAttempts attempts: $e');
@@ -258,7 +262,10 @@ class HttpsCalls {
     }
   }
 
-  Future<http.Response> getApiHits(String endpoint, {CancelToken? cancelToken}) {
+  Future<http.Response> getApiHits(
+    String endpoint, {
+    CancelToken? cancelToken,
+  }) {
     return _performRequest(
       HttpMethod.get,
       endpoint,
@@ -267,8 +274,11 @@ class HttpsCalls {
     );
   }
 
-  Future<http.Response> postApiHits(String endpoint, List<int>? utfContent,
-      {CancelToken? cancelToken}) {
+  Future<http.Response> postApiHits(
+    String endpoint,
+    List<int>? utfContent, {
+    CancelToken? cancelToken,
+  }) {
     return _performRequest(
       HttpMethod.post,
       endpoint,
@@ -279,8 +289,11 @@ class HttpsCalls {
     );
   }
 
-  Future<http.Response> putApiHits(String endpoint, List<int> utfContent,
-      {CancelToken? cancelToken}) {
+  Future<http.Response> putApiHits(
+    String endpoint,
+    List<int> utfContent, {
+    CancelToken? cancelToken,
+  }) {
     return _performRequest(
       HttpMethod.put,
       endpoint,
@@ -291,8 +304,11 @@ class HttpsCalls {
     );
   }
 
-  Future<http.Response> patchApiHits(String endpoint, List<int> utfContent,
-      {CancelToken? cancelToken}) {
+  Future<http.Response> patchApiHits(
+    String endpoint,
+    List<int> utfContent, {
+    CancelToken? cancelToken,
+  }) {
     return _performRequest(
       HttpMethod.patch,
       endpoint,
@@ -303,8 +319,11 @@ class HttpsCalls {
     );
   }
 
-  Future<http.Response> deleteApiHits(String endpoint,
-      {List<int>? utfContent, CancelToken? cancelToken}) {
+  Future<http.Response> deleteApiHits(
+    String endpoint, {
+    List<int>? utfContent,
+    CancelToken? cancelToken,
+  }) {
     return _performRequest(
       HttpMethod.delete,
       endpoint,
